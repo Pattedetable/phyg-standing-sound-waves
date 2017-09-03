@@ -2,7 +2,9 @@
 
 ##Français
 
-Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.  Le programme est disponible pour Linux, MacOS et Windows.
+Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.
+
+Le programme est disponible pour Linux, MacOS et Windows.  Il s'agit en même temps d'un projet personnel d'apprentissage de programmation.  Si vous trouvez des erreurs, sentez-vous bien à l'aise de les souligner!
 
 
 ###Utilisation
@@ -52,7 +54,9 @@ La version courte de cette licence est que vous êtes libre d'utiliser ce logici
 
 ##English
 
-This program serves to illustrate how particles in the air behave when oscillating according to a standing wave.  In Québec's education system, this notion belongs at the college level.  This program is available for Linux, MacOS and Windows.
+This program serves to illustrate how particles in the air behave when oscillating according to a standing wave.  In Québec's education system, this notion belongs at the college level.
+
+This program is available for Linux, MacOS and Windows.  It is also a personal learning project.  Please report any errors you find!
 
 
 ###Usage
