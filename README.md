@@ -1,5 +1,7 @@
 # Onde sonore stationnaire
 
+![screenshot](https://raw.githubusercontent.com/Pattedetable/onde-sonore-stationnaire/master/onde_son_screenshot.png)
+
 ## Français
 
 Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.
