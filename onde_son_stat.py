@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-from Onde_stationnaire import Ui_Onde_Sonore_Stat
+from onde_stationnaire_main_window import Ui_Onde_Sonore_Stat
 from dialog import Ui_Dialog
 
 
