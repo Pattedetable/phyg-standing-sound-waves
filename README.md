@@ -1,0 +1,101 @@
+#Onde sonore stationnaire
+
+##Français
+
+Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.  Le programme est disponible pour Linux, MacOS et Windows.
+
+
+###Utilisation
+
+Afin d'utiliser ce programme, vous aurez besoin des logiciels suivants :
+
+  * Python 3
+  * ImageMagick
+
+Si vous utilisez Linux, Python sera généralement déjà installé.  Si ce n'est pas déjà fait, vous pouvez installer Python 3 à partir des dépôts de logiciels de votre distribution.
+
+Que vous utilisiez Linux, MacOS ou Windows, vous pouvez aussi installer Python à partir du [site officiel](https://www.python.org/).  Sélectionnez ensuite le paquet correspondant à votre système d'exploitation.  ImageMagick peut lui aussi être téléchargé à partir de son [site web](https://www.imagemagick.org/script/index.php).
+
+Vous aurez aussi besoin des modules Python suivants :
+
+  * Numpy
+  * Matplotlib
+  * PyQt5
+
+Si vous utilisez Linux, il est fort probable qu'ils se trouvent dans les dépôts logiciels de votre distribution.
+
+Pour tous les systèmes d'exploitation supportés, à partir de la version 3.4, Python inclus de plus `pip`, un gestionnaire de paquet qui permet d'installer des modules pour Python.  Pour vérifer la version de Python installée sur votre système, ouvrez un terminal (Linux, MacOS) ou une invite de commande (Windows) et tappez :
+
+```python --version```
+
+Si le numéro de version affiché à l'écran commence par 2, dans tout ce qui suit, utilisez `python3` au lieu de `python`, et `pip3` au lieu de `pip`.
+
+Vous pouvez vous servir de `pip` pour installer les divers modules nécessaires.  Par exemple, pour installer Numpy sur Linux, une fois les droits administrateurs obtenus, entrez dans un terminal :
+
+```python pip install numpy```
+
+Sur Windows, vous n'avez pas besoin des droits administrateurs, et la commande est plutôt :
+
+```pip install numpy```
+
+Une fois ces modules installés, dans le terminal sous Linux et MacOS ou l'invite de commande sous Windows, entrez :
+
+```python onde_son_stat.py```
+
+Sous Windows, vous pouvez aussi double-cliquer sur le fichier ```onde_son_stat.py```.
+
+###License
+
+Le programme est distribué sous la licence GNU GPLv3.  Pour le texte complet, référez-vous au fichier `LICENSE`.
+La version courte de cette licence est que vous êtes libre d'utiliser ce logiciel, d'en modifier le code source, ainsi que de le redistribuer, que ce soit sous sa version originale ou modifiée.  Cependant, vous devez donner ces mêmes droits aux personnes qui utiliseront votre logiciel redistribué.
+
+
+##English
+
+This program serves to illustrate how particles in the air behave when oscillating according to a standing wave.  In Québec's education system, this notion belongs at the college level.  This program is available for Linux, MacOS and Windows.
+
+
+###Usage
+
+
+You will need some software to use this program, namely:
+
+  * Python 3
+  * ImageMagick
+
+If you are using Linux, Python will generally already be installed.  If not, you can install it from your distribution's repositories.
+
+You can also install Python from the [official website](https://www.python.org/).  Once there, select the appropriate package for your operating system.  ImageMagick can also be downloaded from its [website](https://www.imagemagick.org/script/index.php).
+
+You will also need the following Python modules:
+
+  * Numpy
+  * Matplotlib
+  * PyQt5
+
+On Linux, you will most likely find these modules in your distribution's repositories.
+
+On all supported operating systems, starting with version 3.4, Python includes `pip`, a package manager for Python which can be used to install the necessary modules.  To check the version of Python that is installed on your system, open a terminal (Linux, MacOS) or a command prompt (Windows) and type in:
+
+```python --version```
+
+If the version number displayed on screen begins with 2, replace `python` with `python3` and `pip` with `pip3` in every command that follows.
+
+You can then use `pip` to install the necessary modules.  For instance, to install Numpy on Linux, acquire administrator rights and then type in a terminal:
+
+```python pip install numpy```
+
+On Windows, administrator rights are not required, and the command is instead:
+
+```pip install numpy```
+
+Once these are installed, open a terminal on Linux or MacOS (or command prompt on Windows) and enter:
+
+```python onde_son_stat.py```
+
+Moreover, on Windows, you can simply double-click on the ```onde_son_stat.py``` file.
+
+###License
+
+This program is distributed under the GNU GPLv3 licence.  The details of this license can be found in the `LICENSE` file.
+The short version is that you are free to use this software, to modify its source code, and to redistribute it in either its original or modified form.  However, you have to give those same rights to the users of the redistributed software.
