@@ -1,13 +1,13 @@
-#Onde sonore stationnaire
+# Onde sonore stationnaire
 
-##Français
+## Français
 
 Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.
 
 Le programme est disponible pour Linux, MacOS et Windows.  Il s'agit en même temps d'un projet personnel d'apprentissage de programmation.  Si vous trouvez des erreurs, sentez-vous bien à l'aise de les souligner!
 
 
-###Utilisation
+### Utilisation
 
 Afin d'utiliser ce programme, vous aurez besoin des logiciels suivants :
 
@@ -46,20 +46,20 @@ Une fois ces modules installés, dans le terminal sous Linux et MacOS ou l'invit
 
 Sous Windows, vous pouvez aussi double-cliquer sur le fichier ```onde_son_stat.py```.
 
-###License
+### License
 
 Le programme est distribué sous la licence GNU GPLv3.  Pour le texte complet, référez-vous au fichier `LICENSE`.
 La version courte de cette licence est que vous êtes libre d'utiliser ce logiciel, d'en modifier le code source, ainsi que de le redistribuer, que ce soit sous sa version originale ou modifiée.  Cependant, vous devez donner ces mêmes droits aux personnes qui utiliseront votre logiciel redistribué.
 
 
-##English
+## English
 
 This program serves to illustrate how particles in the air behave when oscillating according to a standing wave.  In Québec's education system, this notion belongs at the college level.
 
 This program is available for Linux, MacOS and Windows.  It is also a personal learning project.  Please report any errors you find!
 
 
-###Usage
+### Usage
 
 
 You will need some software to use this program, namely:
@@ -99,7 +99,7 @@ Once these are installed, open a terminal on Linux or MacOS (or command prompt o
 
 Moreover, on Windows, you can simply double-click on the ```onde_son_stat.py``` file.
 
-###License
+### License
 
 This program is distributed under the GNU GPLv3 licence.  The details of this license can be found in the `LICENSE` file.
 The short version is that you are free to use this software, to modify its source code, and to redistribute it in either its original or modified form.  However, you have to give those same rights to the users of the redistributed software.
