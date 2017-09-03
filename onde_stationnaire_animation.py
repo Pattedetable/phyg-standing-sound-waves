@@ -6,8 +6,7 @@ import os
 import time
 
 import particle
-#import afficher
-#import animation
+
 
 def readParams():
     """ Read parameters from a file """
@@ -24,7 +23,7 @@ def readParams():
     except FileNotFoundError:
         """ Create the file if it does not exist"""
         print("Création d'un nouveau fichier de paramètres...")
-        write_params(1, 0)
+        writeParams(1, 0)
         return 1, False
 
 
