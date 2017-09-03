@@ -1,2 +1,9 @@
 .gif
 .spec
+dist/*
+build/*
+freeze/*
+__pycache__/*
+Interface/__pycache__/*
+*~
+*_old.py
