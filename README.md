@@ -2,11 +2,14 @@
 
 ![screenshot](https://raw.githubusercontent.com/Pattedetable/onde-sonore-stationnaire/master/onde_son_screenshot.png)
 
+
 ## Français
 
 Ce programme a pour but d'illustrer le mouvement des particules dans l'air lorsqu'agitées selon une onde sonore stationnaire.  Dans le système d'éducation québécois, cette notion se place au niveau collégial.
 
 Le programme est disponible pour Linux, MacOS et Windows.  Il s'agit en même temps d'un projet personnel d'apprentissage de programmation.  Si vous trouvez des erreurs, sentez-vous bien à l'aise de les souligner!
+
+Le fichier utilisé pour démarrer le programme est ```onde_son_stat.py```.
 
 
 ### Utilisation
@@ -48,6 +51,7 @@ Une fois ces modules installés, dans le terminal sous Linux et MacOS ou l'invit
 
 Sous Windows, vous pouvez aussi double-cliquer sur le fichier ```onde_son_stat.py```.
 
+
 ### License
 
 Le programme est distribué sous la licence GNU GPLv3.  Pour le texte complet, référez-vous au fichier `LICENSE`.
@@ -60,9 +64,10 @@ This program serves to illustrate how particles in the air behave when oscillati
 
 This program is available for Linux, MacOS and Windows.  It is also a personal learning project.  Please report any errors you find!
 
+The file used to start the program is ```onde_son_stat.py```.
+
 
 ### Usage
-
 
 You will need some software to use this program, namely:
 
@@ -100,6 +105,7 @@ Once these are installed, open a terminal on Linux or MacOS (or command prompt o
 ```python onde_son_stat.py```
 
 Moreover, on Windows, you can simply double-click on the ```onde_son_stat.py``` file.
+
 
 ### License
 
