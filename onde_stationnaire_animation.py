@@ -38,7 +38,7 @@ def readParams():
                 tuyau_ferme = False
         return nb_nodes, tuyau_ferme
     except FileNotFoundError:
-        """ Create the file if it does not exist"""
+        # Create the file if it does not exist
         print("Création d'un nouveau fichier de paramètres...")
         writeParams(1, 0)
         return 1, False
@@ -55,7 +55,8 @@ def writeParams(nb_nodes, tuyau_ferme_num):
 
 
 def initAnimation():
-    """ Important constants and parameters """
+    """ Define parameters and setup the base graphic """
+    # Important parameters
     [nb_nodes, tuyau_ferme] = readParams()
 
     nb_particules_hor = 30
@@ -66,7 +67,7 @@ def initAnimation():
     grilley = [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]
 
 
-    """ Create and setup animation """
+    # Create and setup animation
     oscillation = plt.figure()
 
     ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
@@ -85,7 +86,7 @@ def initAnimation():
         node = longueur/(2*nb_nodes)
         periode = 2*longueur/nb_nodes
 
-    """ Creation of each individual particle """
+    # Creation of each individual particle
     intervalle = longueur/(nb_particules_hor)
     k = 2*np.pi/periode
     balls = []
@@ -99,10 +100,11 @@ def initAnimation():
 
 
 def animationRealTime():
-    """ Initialize animation parameters """
+    """ Display an animation according to the current parameters """
+    # Initialize animation parameters
     [oscillation, ax1, periode, num_frames, period, omega, balls, grilley] = initAnimation()
 
-    """ Create each frame of the animation """
+    # Create each frame of the animation
     temps = 0
     while True:
         [nb_nodes, tuyau_ferme] = readParams()
@@ -122,20 +124,21 @@ def animationRealTime():
 
 
 def animationGif(ui):
+    """ Create a GIF animation according to the specified parameters """
 
     ui.disableAll(True)
 
-    """ Initialize animation parameters """
+    # Initialize animation parameters
     print("Initialisation de l'animation...")
     ui.textBrowser.setText("Initialisation de l'animation...")
     [oscillation, ax1, periode, num_frames, period, omega, balls, grilley] = initAnimation()
 
-#    animation = ImageMagickWriter(fps=num_frames/3) #Uses RAM
-    animation = ImageMagickFileWriter(fps=num_frames/3) #Temporary files
+#    animation = ImageMagickWriter(fps=num_frames/3) # Uses RAM
+    animation = ImageMagickFileWriter(fps=num_frames/3) # Temporary files
     animation.setup(fig=oscillation, outfile="particules.gif", dpi=128)
 
 
-    """ Create each frame of the animation """
+    # Create each frame of the animation
     print("Création de l'animation...")
     ui.textBrowser.setText("Création de l'animation...")
     tempss = np.linspace(0, period, num_frames)
@@ -162,5 +165,5 @@ def animationGif(ui):
 
     ui.afficherGif()
 
-    #os.system("eog particules.gif") # For GNOME-based Linux systems
-    #os.system("start particules.gif") # For Windows
+#    os.system("eog particules.gif") # For GNOME-based Linux systems
+#    os.system("start particules.gif") # For Windows
