@@ -38,7 +38,8 @@ class Ui_Dialog(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(Dialog)
-        self.label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
+        self.label.setOpenExternalLinks(True)
+        self.label.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.pushButton = QtWidgets.QPushButton(Dialog)
@@ -52,5 +53,5 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "À propos"))
-        self.label.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Auteur :</span> Manuel Barrette</p><p><span style=\" font-weight:600;\">Année :</span> 2017</p><p><span style=\" font-weight:600;\">Code source :</span> https://github.com/Pattedetable/onde-sonore-stationnaire</p><p><span style=\" font-weight:600;\">Licence :</span> GNU GPLv3</p></body></html>"))
+        self.label.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-weight:600;\">Auteur :</span> Manuel Barrette</p><p><span style=\" font-weight:600;\">Année :</span> 2017</p><p><span style=\" font-weight:600;\">Code source</span> disponible sur <a href=\"https://github.com/Pattedetable/onde-sonore-stationnaire\"><span style=\" text-decoration: underline; color:#0000ff;\">GitHub</span></a></p><p><span style=\" font-weight:600;\">Licence : </span><a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html\"><span style=\" text-decoration: underline; color:#0000ff;\">GNU GPLv3</span></a></p></body></html>"))
         self.pushButton.setText(_translate("Dialog", "Fermer"))
