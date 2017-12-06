@@ -1,34 +1,15 @@
-#
-# Copyright 2017 Manuel Barrette
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/pattedetable/Python/Projet/Interface/Onde_stationnaire.ui'
+# Form implementation generated from reading ui file '/home/pattedetable/Python/Projet/Interface/onde_stationnaire_main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import onde_stationnaire_animation as onde
 
-
-class Ui_Onde_Sonore_Stat(object):
-    def setupUi(self, MainWindow, Dialog):
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 455)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -91,17 +72,16 @@ class Ui_Onde_Sonore_Stat(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
+        self.label_3.setText("")
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 0, 3, 6, 1)
-        picture = QtGui.QPixmap("graphique_initial.png")
-        self.label_3.setPixmap(picture)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1001, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))
         self.menubar.setObjectName("menubar")
         self.menu_aide = QtWidgets.QMenu(self.menubar)
         self.menu_aide.setObjectName("menu_aide")
@@ -111,20 +91,7 @@ class Ui_Onde_Sonore_Stat(object):
         self.menu_aide.addAction(self.action_propos)
         self.menubar.addAction(self.menu_aide.menuAction())
 
-        self.horizontalSlider.setValue(onde.readParams()[0])
-        self.comboBox.setCurrentIndex(onde.readParams()[1])
-#        temps_reel = subprocess.Popen(["python", "animationRealTime.py"], )
-
         self.retranslateUi(MainWindow)
-        self.action_propos.triggered.connect(lambda: Dialog.show())
-        self.lcdNumber.display(self.horizontalSlider.value())
-        self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
-        self.horizontalSlider.valueChanged['int'].connect(lambda: onde.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-#        self.pushButton_2.clicked.connect(lambda: temps_reel.terminate())
-        self.pushButton_2.clicked.connect(lambda: Dialog.close())
-        self.pushButton_2.clicked.connect(lambda: MainWindow.close())
-        self.pushButton.clicked.connect(lambda: onde.animationGif(self))
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: onde.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.comboBox, self.horizontalSlider)
         MainWindow.setTabOrder(self.horizontalSlider, self.pushButton_2)
@@ -147,15 +114,3 @@ class Ui_Onde_Sonore_Stat(object):
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
         self.action_propos.setText(_translate("MainWindow", "À propos"))
 
-    def afficherGif(self):
-        movie = QtGui.QMovie("particules.gif")
-        movie.setScaledSize(self.label_3.size())
-        self.label_3.setMovie(movie)
-        movie.start()
-
-    def disableAll(self, boolean):
-        self.horizontalSlider.setDisabled(boolean)
-        self.pushButton.setDisabled(boolean)
-        self.pushButton_2.setDisabled(boolean)
-        self.comboBox.setDisabled(boolean)
-        self.menu_aide.setDisabled(boolean)
