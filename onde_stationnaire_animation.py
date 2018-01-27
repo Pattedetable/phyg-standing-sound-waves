@@ -95,32 +95,7 @@ def initAnimation():
         amplitude = 0.5*np.sin(k*(x_eq - node))
         balls.append(particle.Particule(x_eq, amplitude))
 
-
     return oscillation, ax1, periode, num_frames, period, omega, balls, grilley
-
-
-def animationRealTime():
-    """ Display an animation according to the current parameters """
-    # Initialize animation parameters
-    [oscillation, ax1, periode, num_frames, period, omega, balls, grilley] = initAnimation()
-
-    # Create each frame of the animation
-    temps = 0
-    while True:
-        [nb_nodes, tuyau_ferme] = readParams()
-        temps += period/num_frames
-        x = np.sin(omega*temps)
-        frames = []
-        for ball in balls:
-            position = ball.update_position(x)
-            for y in grilley:
-                frames.append(ax1.scatter(position, y, color='k'))
-        oscillation.savefig("graphique.png")
-#        ui.graphicsView.updateScene()
-
-#                for frame in frames:
-#                    frame.remove()
-        time.sleep(1/(num_frames/3))
 
 
 def animationGif(ui):
