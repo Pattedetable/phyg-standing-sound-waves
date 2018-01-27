@@ -25,9 +25,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import onde_stationnaire_animation as onde
+# from PyQt5.QtCore import QFileSystemWatcher # Temps réel
+# from subprocess import Popen # Temps réel
 
 
-class Ui_Onde_Sonore_Stat(object):
+class Ui_MainWindow(object):
     def setupUi(self, MainWindow, Dialog):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 455)
@@ -113,14 +115,17 @@ class Ui_Onde_Sonore_Stat(object):
 
         self.horizontalSlider.setValue(onde.readParams()[0])
         self.comboBox.setCurrentIndex(onde.readParams()[1])
-#        temps_reel = subprocess.Popen(["python", "animationRealTime.py"], )
+#        self.sentinelle = QFileSystemWatcher()
+#        self.sentinelle.addPath("graphique.png")
+#        temps_reel = Popen(["python", "animationRealTime.py"], ) # Temps réel
 
         self.retranslateUi(MainWindow)
+#        self.sentinelle.fileChanged.connect(lambda: self.afficherGraphique())
         self.action_propos.triggered.connect(lambda: Dialog.show())
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: onde.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-#        self.pushButton_2.clicked.connect(lambda: temps_reel.terminate())
+#        self.pushButton_2.clicked.connect(lambda: temps_reel.terminate()) # Temps réel
         self.pushButton_2.clicked.connect(lambda: Dialog.close())
         self.pushButton_2.clicked.connect(lambda: MainWindow.close())
         self.pushButton.clicked.connect(lambda: onde.animationGif(self))
@@ -152,6 +157,10 @@ class Ui_Onde_Sonore_Stat(object):
         movie.setScaledSize(self.label_3.size())
         self.label_3.setMovie(movie)
         movie.start()
+
+    def afficherGraphique(self):
+        self.label_3.clear()
+        self.label_3.setPixmap(QtGui.QPixmap("graphique.png"))
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)

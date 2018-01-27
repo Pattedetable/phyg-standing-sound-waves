@@ -17,9 +17,8 @@
 
 """ Initialize windows and make the main window appear """
 import sys
-from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-from onde_stationnaire_main_window import Ui_Onde_Sonore_Stat
+import onde_stationnaire_main_window
 from dialog import Ui_Dialog
 
 
@@ -28,7 +27,7 @@ app = QApplication(sys.argv)
 window_Onde = QMainWindow()
 dialog = QDialog()
 
-ui_Onde_Sonore_Stat = Ui_Onde_Sonore_Stat()
+ui_Onde_Sonore_Stat = onde_stationnaire_main_window.Ui_MainWindow()
 ui_Dial = Ui_Dialog()
 
 ui_Dial.setupUi(dialog)

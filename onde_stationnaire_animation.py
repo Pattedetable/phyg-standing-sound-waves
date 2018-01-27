@@ -61,7 +61,7 @@ def initAnimation():
 
     nb_particules_hor = 30
     longueur = 20
-    num_frames = 90
+    num_frames = 45
     period = 30
     omega = 2*np.pi/period
     grilley = [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]
