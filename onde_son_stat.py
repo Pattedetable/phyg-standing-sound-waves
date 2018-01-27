@@ -19,7 +19,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 import onde_stationnaire_main_window
-from dialog import Ui_Dialog
+import dialog_onde
 
 
 # Initialize windows
@@ -28,7 +28,7 @@ window_Onde = QMainWindow()
 dialog = QDialog()
 
 ui_Onde_Sonore_Stat = onde_stationnaire_main_window.Ui_MainWindow()
-ui_Dial = Ui_Dialog()
+ui_Dial = dialog_onde.Ui_Dialog()
 
 ui_Dial.setupUi(dialog)
 ui_Onde_Sonore_Stat.setupUi(window_Onde, dialog)
