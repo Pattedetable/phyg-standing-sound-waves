@@ -16,10 +16,10 @@
 #
 
 import numpy as np
-from matplotlib.animation import ImageMagickWriter, ImageMagickFileWriter
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import os
+import subprocess
 import time
 
 import particle
@@ -133,30 +133,36 @@ def animationGif(ui):
     ui.textBrowser.setText("Initialisation de l'animation...")
     [oscillation, ax1, periode, num_frames, period, omega, balls, grilley] = initAnimation()
 
-#    animation = ImageMagickWriter(fps=num_frames/3) # Uses RAM
-    animation = ImageMagickFileWriter(fps=num_frames/3) # Temporary files
-    animation.setup(fig=oscillation, outfile="particules.gif", dpi=128)
-
+    compteur = 9
 
     # Create each frame of the animation
     print("Création de l'animation...")
     ui.textBrowser.setText("Création de l'animation...")
     tempss = np.linspace(0, period, num_frames)
     for temps in tempss:
+        compteur += 1
+        nom_fig = "_tmp" + str(compteur) + ".png"
         x = np.sin(omega*temps)
         frames = []
         for ball in balls:
             position = ball.update_position(x)
             for y in grilley:
                 frames.append(ax1.scatter(position, y, color='k'))
-        animation.grab_frame()
+        oscillation.savefig(nom_fig)
+        ui.afficherGraphique(nom_fig)
         for frame in frames:
             frame.remove()
         ui.progressBar.setValue(temps/tempss[-1]*100)
 
     print("Finalisation de l'animation...")
     ui.textBrowser.setText("Finalisation de l'animation...")
-    animation.finish()
+#    CREATE_NO_WINDOW = 0x08000000 # Windows
+#    subprocess.call('.\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Windows
+    os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # Linux
+    files = os.listdir('.')
+    for file in files:
+        if file.startswith('_tmp'):
+            os.remove(file)
 
     print("Animation terminée!\n")
     ui.textBrowser.setText("Animation terminée!")
@@ -164,6 +170,3 @@ def animationGif(ui):
     ui.disableAll(False)
 
     ui.afficherGif()
-
-#    os.system("eog particules.gif") # For GNOME-based Linux systems
-#    os.system("start particules.gif") # For Windows

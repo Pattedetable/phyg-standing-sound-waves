@@ -158,9 +158,9 @@ class Ui_MainWindow(object):
         self.label_3.setMovie(movie)
         movie.start()
 
-    def afficherGraphique(self):
+    def afficherGraphique(self, graphique):
         self.label_3.clear()
-        self.label_3.setPixmap(QtGui.QPixmap("graphique.png"))
+        self.label_3.setPixmap(QtGui.QPixmap(graphique))
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
