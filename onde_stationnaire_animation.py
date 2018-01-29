@@ -131,9 +131,9 @@ def animationGif(ui):
 
     print("Finalisation de l'animation...")
     ui.textBrowser.setText("Finalisation de l'animation...")
-#    CREATE_NO_WINDOW = 0x08000000 # Windows
-#    subprocess.call('.\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Windows
-    os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # Linux
+#    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
+#    subprocess.call('.\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
+    os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # With script
     files = os.listdir('.')
     for file in files:
         if file.startswith('_tmp'):
