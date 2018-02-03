@@ -150,6 +150,9 @@ def animationGif(ui):
     deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
     pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
 
+    graph2, = ax2.plot(grillex, 0*deplacement_pos, color='k')
+    graph3, = ax3.plot(grillex, 0*pressure_pos, color='k')
+
     # Create each frame of the animation
     print("Création de l'animation...")
     ui.textBrowser.setText("Création de l'animation...")
@@ -159,28 +162,17 @@ def animationGif(ui):
         nom_fig = "_tmp" + str(compteur) + ".png"
         x = np.sin(omega*temps)
         frames_particles = []
-        frames_displacement = []
-        frames_pressure = []
         deplacement = np.sin(omega*temps)*deplacement_pos
         pressure = -np.sin(omega*temps)*pressure_pos
-        frames_displacement.append(ax2.scatter(grillex, deplacement, color='k'))
-        frames_pressure.append(ax3.scatter(grillex, pressure, color='k'))
+        graph2.set_ydata(deplacement)
+        graph3.set_ydata(pressure)
         for ball in balls:
             position = ball.update_position(x)
             for y in grilley:
-#                frames.append([ax1.scatter(position, y, color='k'), ax2.plot(grillex, deplacement, color='k'), ax3.plot(grillex, pressure, color='k')])
                 frames_particles.append(ax1.scatter(position, y, color='k'))
-#                ax1.scatter(position, y, color='k')
-#                ax2.plot(grillex, deplacement, color='k')
-#                ax3.plot(grillex, pressure, color='k')
-#                frames.append(ax1)
         oscillation.savefig(nom_fig)
         ui.afficherGraphique(nom_fig)
         for frame in frames_particles:
-            frame.remove()
-        for frame in frames_displacement:
-            frame.remove()
-        for frame in frames_pressure:
             frame.remove()
         ui.progressBar.setValue(temps/tempss[-1]*100)
 
