@@ -64,22 +64,57 @@ def initAnimation():
     num_frames = 45
     period = 30
     omega = 2*np.pi/period
-    grilley = [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]
+    grilley = [-0.5, -0.25, 0, 0.25, 0.5]
+#    grilley = [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]
 
+    grillex = np.linspace(0, longueur, 100)
 
     # Create and setup animation
-    oscillation = plt.figure()
+#    oscillation = plt.figure()
+#
+#    ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
+#    ax.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
+#    ax.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
+#    ax.axis([-1, longueur + 1, -1, 1])
+#    ax1 = oscillation.add_axes(ax, autoscale_on=False)
+#    plt.axis('off')
 
-    ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
-    ax.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
-    ax.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
-    ax.axis([-1, longueur + 1, -1, 1])
-    ax1 = oscillation.add_axes(ax, autoscale_on=False)
-    plt.axis('off')
+
+    oscillation, (ax1, ax2, ax3) = plt.subplots(3, sharex=True)
+
+#    ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
+    ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
+    ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
+    ax1.axis([-1, longueur + 1, -1, 1])
+
+    ax2.axis([-1, longueur + 1, -1, 1])
+    ax3.axis([-1, longueur + 1, -1, 1])
+#    oscillation.add_axes(ax, autoscale_on=False)
+#    plt.axis('off')
+
+    ax1.set_ylabel('Particules')
+    ax2.set_ylabel('Déplacement')
+    ax3.set_ylabel('Pression')
+
+    ax1.yaxis.set_label_coords(-0.1, 0.5)
+    ax2.yaxis.set_label_coords(-0.1, 0.5)
+    ax3.yaxis.set_label_coords(-0.1, 0.5)
+
+    ax1.set_yticks([])
+    ax2.set_yticks([0])
+    ax3.set_yticks([0])
+
+    ax2.set_yticklabels([r"$0$"])
+    ax3.set_yticklabels([r"$p_{atm}$"])
+
+    ax2.grid(True)
+    ax3.grid(True)
+
+    ax3.set_xticks([])
 
     # Differences between open and closed pipes
     if tuyau_ferme:
-        ax.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
+        ax1.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
         node = 0
         periode = 4*longueur/(1 + 2*nb_nodes)
     else:
@@ -95,7 +130,7 @@ def initAnimation():
         amplitude = 0.5*np.sin(k*(x_eq - node))
         balls.append(particle.Particule(x_eq, amplitude))
 
-    return oscillation, ax1, periode, num_frames, period, omega, balls, grilley
+    return oscillation, ax1, ax2, ax3, periode, num_frames, period, omega, balls, grilley, grillex, node
 
 
 def animationGif(ui):
@@ -106,9 +141,14 @@ def animationGif(ui):
     # Initialize animation parameters
     print("Initialisation de l'animation...")
     ui.textBrowser.setText("Initialisation de l'animation...")
-    [oscillation, ax1, periode, num_frames, period, omega, balls, grilley] = initAnimation()
+    [oscillation, ax1, ax2, ax3, periode, num_frames, period, omega, balls, grilley, grillex, node] = initAnimation()
 
     compteur = 9
+
+    # Displacement and pressure functions
+
+    deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
+    pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
 
     # Create each frame of the animation
     print("Création de l'animation...")
@@ -118,14 +158,29 @@ def animationGif(ui):
         compteur += 1
         nom_fig = "_tmp" + str(compteur) + ".png"
         x = np.sin(omega*temps)
-        frames = []
+        frames_particles = []
+        frames_displacement = []
+        frames_pressure = []
+        deplacement = np.sin(omega*temps)*deplacement_pos
+        pressure = -np.sin(omega*temps)*pressure_pos
         for ball in balls:
             position = ball.update_position(x)
             for y in grilley:
-                frames.append(ax1.scatter(position, y, color='k'))
+#                frames.append([ax1.scatter(position, y, color='k'), ax2.plot(grillex, deplacement, color='k'), ax3.plot(grillex, pressure, color='k')])
+                frames_particles.append(ax1.scatter(position, y, color='k'))
+                frames_displacement.append(ax2.scatter(grillex, deplacement, color='k'))
+                frames_pressure.append(ax3.scatter(grillex, pressure, color='k'))
+#                ax1.scatter(position, y, color='k')
+#                ax2.plot(grillex, deplacement, color='k')
+#                ax3.plot(grillex, pressure, color='k')
+#                frames.append(ax1)
         oscillation.savefig(nom_fig)
         ui.afficherGraphique(nom_fig)
-        for frame in frames:
+        for frame in frames_particles:
+            frame.remove()
+        for frame in frames_displacement:
+            frame.remove()
+        for frame in frames_pressure:
             frame.remove()
         ui.progressBar.setValue(temps/tempss[-1]*100)
 
