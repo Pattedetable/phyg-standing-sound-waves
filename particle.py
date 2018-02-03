@@ -15,8 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import numpy as np
-
 """ Simulate the movement of a particle as part of a sound wave """
 
 class Particule():

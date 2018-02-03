@@ -20,7 +20,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import os
 import subprocess
-import time
 
 import particle
 
@@ -82,15 +81,12 @@ def initAnimation():
 
     oscillation, (ax1, ax2, ax3) = plt.subplots(3, sharex=True)
 
-#    ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
     ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
     ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
     ax1.axis([-1, longueur + 1, -1, 1])
 
     ax2.axis([-1, longueur + 1, -1, 1])
     ax3.axis([-1, longueur + 1, -1, 1])
-#    oscillation.add_axes(ax, autoscale_on=False)
-#    plt.axis('off')
 
     ax1.set_ylabel('Particules')
     ax2.set_ylabel('Déplacement')
