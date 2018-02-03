@@ -163,13 +163,13 @@ def animationGif(ui):
         frames_pressure = []
         deplacement = np.sin(omega*temps)*deplacement_pos
         pressure = -np.sin(omega*temps)*pressure_pos
+        frames_displacement.append(ax2.scatter(grillex, deplacement, color='k'))
+        frames_pressure.append(ax3.scatter(grillex, pressure, color='k'))
         for ball in balls:
             position = ball.update_position(x)
             for y in grilley:
 #                frames.append([ax1.scatter(position, y, color='k'), ax2.plot(grillex, deplacement, color='k'), ax3.plot(grillex, pressure, color='k')])
                 frames_particles.append(ax1.scatter(position, y, color='k'))
-                frames_displacement.append(ax2.scatter(grillex, deplacement, color='k'))
-                frames_pressure.append(ax3.scatter(grillex, pressure, color='k'))
 #                ax1.scatter(position, y, color='k')
 #                ax2.plot(grillex, deplacement, color='k')
 #                ax3.plot(grillex, pressure, color='k')
