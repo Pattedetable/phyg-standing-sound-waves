@@ -112,7 +112,7 @@ def initAnimation():
     if tuyau_ferme:
         ax1.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
         node = 0
-        periode = 4*longueur/(1 + 2*nb_nodes)
+        periode = 4*longueur/(1 + 2*(nb_nodes-1))
     else:
         node = longueur/(2*nb_nodes)
         periode = 2*longueur/nb_nodes
