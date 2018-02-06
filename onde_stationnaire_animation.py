@@ -175,7 +175,7 @@ def animationGif(ui):
     print("Finalisation de l'animation...")
     ui.textBrowser.setText("Finalisation de l'animation...")
 #    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
-#    subprocess.call('.\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
+#    subprocess.call('.\ImageMagick-7.0.7-22-portable-Q16-x64\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
     os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # With script
     files = os.listdir('.')
     for file in files:
