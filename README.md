@@ -1,6 +1,5 @@
 # Onde sonore stationnaire
 
-![screenshot](https://raw.githubusercontent.com/Pattedetable/onde-sonore-stationnaire/master/onde_son_screenshot.png)
 
 
 ## Français
