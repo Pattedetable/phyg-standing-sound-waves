@@ -194,3 +194,5 @@ def animationGif(ui):
     ui.disableAll(False)
 
     ui.afficherGif()
+
+    plt.close()
