@@ -146,13 +146,19 @@ def animationGif(ui):
     deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
     pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
 
+    # Plot maximum and minimum curves
+    ax2.plot(grillex, deplacement_pos, 'b--')
+    ax2.plot(grillex, -deplacement_pos, 'b--')
+    ax3.plot(grillex, pressure_pos, 'r--')
+    ax3.plot(grillex, -pressure_pos, 'r--')
+
     graph2, = ax2.plot(grillex, 0*deplacement_pos, color='k')
     graph3, = ax3.plot(grillex, 0*pressure_pos, color='k')
 
     # Create each frame of the animation
     print("Création de l'animation...")
     ui.textBrowser.setText("Création de l'animation...")
-    tempss = np.linspace(0, period, num_frames)
+    tempss = np.linspace(0, period-period/num_frames, num_frames)
     for temps in tempss:
         compteur += 1
         nom_fig = "_tmp" + str(compteur) + ".png"
