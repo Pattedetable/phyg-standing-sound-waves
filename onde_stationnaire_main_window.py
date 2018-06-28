@@ -24,11 +24,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-#import onde_stationnaire_animation as onde
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+import matplotlib.animation as anim
 import os
 import subprocess
 import particle
@@ -36,6 +37,9 @@ import particle
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, Dialog):
+
+        self.figure = plt.figure()
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 455)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -78,18 +82,6 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
 
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
-        self.textBrowser.setSizePolicy(sizePolicy)
-        self.textBrowser.setMinimumSize(QtCore.QSize(0, 0))
-        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.textBrowser.setReadOnly(True)
-        self.textBrowser.setObjectName("textBrowser")
-        self.gridLayout.addWidget(self.textBrowser, 4, 0, 1, 3)
-
         self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
         self.horizontalSlider.setMinimum(1)
         self.horizontalSlider.setMaximum(5)
@@ -103,17 +95,27 @@ class Ui_MainWindow(object):
         self.progressBar.setObjectName("progressBar")
         self.gridLayout.addWidget(self.progressBar, 3, 0, 1, 3)
 
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+#        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+#        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+#        sizePolicy.setHorizontalStretch(0)
+#        sizePolicy.setVerticalStretch(0)
+#        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+#        self.label_3.setSizePolicy(sizePolicy)
+#        self.label_3.setScaledContents(True)
+#        self.label_3.setObjectName("label_3")
+#        self.gridLayout.addWidget(self.label_3, 0, 3, 6, 1)
+#        picture = QtGui.QPixmap("graphique_initial.png") # Graphique
+#        self.label_3.setPixmap(picture)
+
+        self.canvas = FigureCanvas(self.figure)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setScaledContents(True)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout.addWidget(self.label_3, 0, 3, 6, 1)
-        picture = QtGui.QPixmap("graphique_initial.png") # Graphique
-        self.label_3.setPixmap(picture)
+        sizePolicy.setHeightForWidth(self.canvas.sizePolicy().hasHeightForWidth())
+        self.canvas.setSizePolicy(sizePolicy)
+        #self.canvas.setScaledContents(True)
+        self.canvas.setObjectName("canvas")
+        self.gridLayout.addWidget(self.canvas, 0, 3, 6, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -133,21 +135,21 @@ class Ui_MainWindow(object):
 
         self.horizontalSlider.setValue(self.readParams()[0])
         self.comboBox.setCurrentIndex(self.readParams()[1])
-#        self.sentinelle = QFileSystemWatcher()
-#        self.sentinelle.addPath("graphique.png")
-#        temps_reel = Popen(["python", "animationRealTime.py"], ) # Temps réel
+
+        self.animationTempsReel()
 
         self.retranslateUi(MainWindow)
-#        self.sentinelle.fileChanged.connect(lambda: self.afficherGraphique())
         self.action_propos.triggered.connect(lambda: Dialog.show())
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-#        self.pushButton_2.clicked.connect(lambda: temps_reel.terminate()) # Temps réel
+        self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
+        self.pushButton.clicked.connect(lambda: self.animationGif())
+        self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: Dialog.close())
         self.pushButton_2.clicked.connect(lambda: MainWindow.close())
-        self.pushButton.clicked.connect(lambda: self.animationGif())
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.comboBox, self.horizontalSlider)
         MainWindow.setTabOrder(self.horizontalSlider, self.pushButton_2)
@@ -163,8 +165,6 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "Tuyau fermé"))
         self.lcdNumber.setToolTip(_translate("MainWindow", "<html><head/><body><p>Numéro du mode</p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "Numéro du mode"))
-        self.textBrowser.setToolTip(_translate("MainWindow", "<html><head/><body><p>Messages système</p></body></html>"))
-        self.textBrowser.setPlaceholderText(_translate("MainWindow", "En attente..."))
         self.horizontalSlider.setToolTip(_translate("MainWindow", "<html><head/><body><p>Glisser pour sélectionner le mode</p></body></html>"))
         self.progressBar.setToolTip(_translate("MainWindow", "<html><head/><body><p>Progression de la création de l\'animation</p></body></html>"))
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
@@ -172,13 +172,13 @@ class Ui_MainWindow(object):
 
     def afficherGif(self):
         movie = QtGui.QMovie("particules.gif")
-        movie.setScaledSize(self.label_3.size())
-        self.label_3.setMovie(movie)
+        movie.setScaledSize(self.canvas.size())
+        self.canvas.setMovie(movie)
         movie.start()
 
     def afficherGraphique(self, graphique):
-        self.label_3.clear()
-        self.label_3.setPixmap(QtGui.QPixmap(graphique))
+        self.canvas.clear()
+        self.canvas.setPixmap(QtGui.QPixmap(graphique))
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
@@ -226,54 +226,45 @@ class Ui_MainWindow(object):
         num_frames = 45
         period = 30
         omega = 2*np.pi/period
-        grilley = [-0.5, -0.25, 0, 0.25, 0.5]
-    #    grilley = [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]
+        grilley = [-0.5, 0, 0.5]
+#        grilley = [-0.5, -0.25, 0, 0.25, 0.5]
 
         grillex = np.linspace(0, longueur, 100)
 
-        # Create and setup animation
-    #    oscillation = plt.figure()
-    #
-    #    ax = plt.Axes(fig=oscillation, rect=[0.1, 0.1, 0.8, 0.8])
-    #    ax.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
-    #    ax.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
-    #    ax.axis([-1, longueur + 1, -1, 1])
-    #    ax1 = oscillation.add_axes(ax, autoscale_on=False)
-    #    plt.axis('off')
+        self.ax1 = self.figure.add_subplot(311)
+        self.ax2 = self.figure.add_subplot(312, sharex=self.ax1)
+        self.ax3 = self.figure.add_subplot(313, sharex=self.ax1)
 
+        self.ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
+        self.ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
+        self.ax1.axis([-1, longueur + 1, -1, 1])
 
-        oscillation, (ax1, ax2, ax3) = plt.subplots(3, sharex=True)
+        self.ax2.axis([-1, longueur + 1, -1, 1])
+        self.ax3.axis([-1, longueur + 1, -1, 1])
 
-        ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
-        ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
-        ax1.axis([-1, longueur + 1, -1, 1])
+        self.ax1.set_ylabel('Particules')
+        self.ax2.set_ylabel('Déplacement')
+        self.ax3.set_ylabel('Pression')
 
-        ax2.axis([-1, longueur + 1, -1, 1])
-        ax3.axis([-1, longueur + 1, -1, 1])
+        self.ax1.yaxis.set_label_coords(-0.1, 0.5)
+        self.ax2.yaxis.set_label_coords(-0.1, 0.5)
+        self.ax3.yaxis.set_label_coords(-0.1, 0.5)
 
-        ax1.set_ylabel('Particules')
-        ax2.set_ylabel('Déplacement')
-        ax3.set_ylabel('Pression')
+        self.ax1.set_yticks([])
+        self.ax2.set_yticks([0])
+        self.ax3.set_yticks([0])
 
-        ax1.yaxis.set_label_coords(-0.1, 0.5)
-        ax2.yaxis.set_label_coords(-0.1, 0.5)
-        ax3.yaxis.set_label_coords(-0.1, 0.5)
+        self.ax2.set_yticklabels([r"$0$"])
+        self.ax3.set_yticklabels([r"$p_{atm}$"])
 
-        ax1.set_yticks([])
-        ax2.set_yticks([0])
-        ax3.set_yticks([0])
+        self.ax2.grid(True)
+        self.ax3.grid(True)
 
-        ax2.set_yticklabels([r"$0$"])
-        ax3.set_yticklabels([r"$p_{atm}$"])
-
-        ax2.grid(True)
-        ax3.grid(True)
-
-        ax3.set_xticks([])
+        self.ax3.set_xticks([])
 
         # Differences between open and closed pipes
         if tuyau_ferme:
-            ax1.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
+            self.ax1.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
             node = 0
             periode = 4*longueur/(1 + 2*(nb_nodes-1))
         else:
@@ -289,18 +280,62 @@ class Ui_MainWindow(object):
             amplitude = 0.5*np.sin(k*(x_eq - node))
             balls.append(particle.Particule(x_eq, amplitude))
 
-        return oscillation, ax1, ax2, ax3, periode, num_frames, period, omega, balls, grilley, grillex, node
+        return periode, num_frames, period, omega, balls, grilley, grillex, node
 
+    def animationTempsReel(self):
+        """ Display the animation in real time """
+
+        self.figure.clear()
+        self.canvas.draw()
+
+        [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
+
+        # Displacement and pressure functions
+
+        deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
+        pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
+
+        # Plot maximum and minimum curves
+        self.ax2.plot(grillex, deplacement_pos, 'b--')
+        self.ax2.plot(grillex, -deplacement_pos, 'b--')
+        self.ax3.plot(grillex, pressure_pos, 'r--')
+        self.ax3.plot(grillex, -pressure_pos, 'r--')
+
+        graph2, = self.ax2.plot(grillex, 0*deplacement_pos, color='k')
+        graph3, = self.ax3.plot(grillex, 0*pressure_pos, color='k')
+
+        tempss = np.linspace(0, period-period/num_frames, num_frames)
+        self.frames_particles = []
+
+        def update(i):
+            for frame in self.frames_particles:
+                frame.remove()
+            self.frames_particles = []
+            temps = tempss[i]
+            x = np.sin(omega*temps)
+            deplacement = np.sin(omega*temps)*deplacement_pos
+            pressure = -np.sin(omega*temps)*pressure_pos
+            graph2.set_ydata(deplacement)
+            graph3.set_ydata(pressure)
+            for ball in balls:
+                position = ball.update_position(x)
+                for y in grilley:
+                    self.frames_particles.append(self.ax1.scatter(position, y, color='k'))
+
+        oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
+        self.canvas.draw()
 
     def animationGif(self):
         """ Create a GIF animation according to the specified parameters """
+
+        self.figure.clear()
+        self.canvas.draw()
 
         self.disableAll(True)
 
         # Initialize animation parameters
         print("Initialisation de l'animation...")
-        self.textBrowser.setText("Initialisation de l'animation...")
-        [oscillation, ax1, ax2, ax3, periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
+        [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
 
         compteur = 9
 
@@ -310,17 +345,16 @@ class Ui_MainWindow(object):
         pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
 
         # Plot maximum and minimum curves
-        ax2.plot(grillex, deplacement_pos, 'b--')
-        ax2.plot(grillex, -deplacement_pos, 'b--')
-        ax3.plot(grillex, pressure_pos, 'r--')
-        ax3.plot(grillex, -pressure_pos, 'r--')
+        self.ax2.plot(grillex, deplacement_pos, 'b--')
+        self.ax2.plot(grillex, -deplacement_pos, 'b--')
+        self.ax3.plot(grillex, pressure_pos, 'r--')
+        self.ax3.plot(grillex, -pressure_pos, 'r--')
 
-        graph2, = ax2.plot(grillex, 0*deplacement_pos, color='k')
-        graph3, = ax3.plot(grillex, 0*pressure_pos, color='k')
+        graph2, = self.ax2.plot(grillex, 0*deplacement_pos, color='k')
+        graph3, = self.ax3.plot(grillex, 0*pressure_pos, color='k')
 
         # Create each frame of the animation
         print("Création de l'animation...")
-        self.textBrowser.setText("Création de l'animation...")
         tempss = np.linspace(0, period-period/num_frames, num_frames)
         for temps in tempss:
             compteur += 1
@@ -334,15 +368,14 @@ class Ui_MainWindow(object):
             for ball in balls:
                 position = ball.update_position(x)
                 for y in grilley:
-                    frames_particles.append(ax1.scatter(position, y, color='k'))
-            oscillation.savefig(nom_fig)
-            self.afficherGraphique(nom_fig)
+                    frames_particles.append(self.ax1.scatter(position, y, color='k'))
+            self.figure.savefig(nom_fig)
+            self.canvas.draw()
             for frame in frames_particles:
                 frame.remove()
             self.progressBar.setValue(temps/tempss[-1]*100)
 
         print("Finalisation de l'animation...")
-        self.textBrowser.setText("Finalisation de l'animation...")
     #    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
     #    subprocess.call('.\ImageMagick-7.0.7-22-portable-Q16-x64\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
         os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # With script
@@ -352,10 +385,7 @@ class Ui_MainWindow(object):
                 os.remove(file)
 
         print("Animation terminée!\n")
-        self.textBrowser.setText("Animation terminée!")
         self.progressBar.setValue(0)
         self.disableAll(False)
 
-        self.afficherGif()
-
-        plt.close()
+        self.animationTempsReel()
