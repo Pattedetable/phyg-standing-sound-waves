@@ -48,9 +48,9 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
 
-        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget) # Animation temps réel
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout.addWidget(self.pushButton_3, 4, 0, 1, 3)
+#        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget) # Animation temps réel
+#        self.pushButton_3.setObjectName("pushButton_3")
+#        self.gridLayout.addWidget(self.pushButton_3, 4, 0, 1, 3)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 5, 0, 1, 1)
 
-        self.comboBox = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox = QtWidgets.QComboBox(self.centralwidget) # Type de tuyau
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -79,10 +79,10 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
 
-        self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
+        self.horizontalSlider = QtWidgets.QSlider(self.centralwidget) # Numéro du mode
         self.horizontalSlider.setMinimum(1)
         self.horizontalSlider.setMaximum(5)
-        self.horizontalSlider.setPageStep(10)
+        self.horizontalSlider.setPageStep(2)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.gridLayout.addWidget(self.horizontalSlider, 3, 0, 1, 3)
@@ -92,25 +92,12 @@ class Ui_MainWindow(object):
         self.progressBar.setObjectName("progressBar")
         self.gridLayout.addWidget(self.progressBar, 7, 0, 1, 3)
 
-#        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-#        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-#        sizePolicy.setHorizontalStretch(0)
-#        sizePolicy.setVerticalStretch(0)
-#        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-#        self.label_3.setSizePolicy(sizePolicy)
-#        self.label_3.setScaledContents(True)
-#        self.label_3.setObjectName("label_3")
-#        self.gridLayout.addWidget(self.label_3, 0, 3, 6, 1)
-#        picture = QtGui.QPixmap("graphique_initial.png") # Graphique
-#        self.label_3.setPixmap(picture)
-
-        self.canvas = FigureCanvas(self.figure)
+        self.canvas = FigureCanvas(self.figure) # Graphique
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas.sizePolicy().hasHeightForWidth())
         self.canvas.setSizePolicy(sizePolicy)
-        #self.canvas.setScaledContents(True)
         self.canvas.setObjectName("canvas")
         self.gridLayout.addWidget(self.canvas, 0, 3, 9, 1)
 
@@ -130,19 +117,25 @@ class Ui_MainWindow(object):
         self.menu_aide.addAction(self.action_propos)
         self.menubar.addAction(self.menu_aide.menuAction())
 
+        # Initial parameters
         self.horizontalSlider.setValue(self.readParams()[0])
         self.comboBox.setCurrentIndex(self.readParams()[1])
 
+        # Start animation
         self.animationTempsReel()
 
         self.retranslateUi(MainWindow)
         self.action_propos.triggered.connect(lambda: Dialog.show())
         self.lcdNumber.display(self.horizontalSlider.value())
+        self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-        self.pushButton_3.clicked.connect(lambda: self.stopAnim())
-        self.pushButton_3.clicked.connect(lambda: self.animationTempsReel())
+        self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
+#        self.pushButton_3.clicked.connect(lambda: self.stopAnim())
+#        self.pushButton_3.clicked.connect(lambda: self.animationTempsReel())
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
         self.pushButton.clicked.connect(lambda: self.stopAnim())
         self.pushButton.clicked.connect(lambda: self.animationGif())
         self.pushButton_2.clicked.connect(lambda: plt.close())
@@ -156,7 +149,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Onde sonore stationnaire"))
         self.pushButton_2.setText(_translate("MainWindow", "Quitter"))
-        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
+#        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
         self.pushButton.setText(_translate("MainWindow", "Exporter GIF"))
         self.label.setText(_translate("MainWindow", "Type de tuyau"))
         self.comboBox.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cliquer pour sélectionner le tuyau</p></body></html>"))
@@ -169,21 +162,25 @@ class Ui_MainWindow(object):
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
         self.action_propos.setText(_translate("MainWindow", "À propos"))
 
-    def afficherGif(self):
-        movie = QtGui.QMovie("particules.gif")
-        movie.setScaledSize(self.canvas.size())
-        self.canvas.setMovie(movie)
-        movie.start()
+#    def afficherGif(self):
+#        movie = QtGui.QMovie("particules.gif")
+#        movie.setScaledSize(self.canvas.size())
+#        self.canvas.setMovie(movie)
+#        movie.start()
+#
+#    def afficherGraphique(self, graphique):
+#        self.canvas.clear()
+#        self.canvas.setPixmap(QtGui.QPixmap(graphique))
 
-    def afficherGraphique(self, graphique):
-        self.canvas.clear()
-        self.canvas.setPixmap(QtGui.QPixmap(graphique))
+    def effacerGraphique(self):
+        self.figure.clear()
+        self.canvas.draw()
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
         self.pushButton.setDisabled(boolean)
         self.pushButton_2.setDisabled(boolean)
-        self.pushButton_3.setDisabled(boolean)
+#        self.pushButton_3.setDisabled(boolean)
         self.comboBox.setDisabled(boolean)
         self.menu_aide.setDisabled(boolean)
 
@@ -221,6 +218,9 @@ class Ui_MainWindow(object):
 
     def initAnimation(self):
         """ Define parameters and setup the base graphic """
+
+        self.effacerGraphique()
+
         # Important parameters
         [nb_nodes, tuyau_ferme] = self.readParams()
 
@@ -288,10 +288,6 @@ class Ui_MainWindow(object):
     def animationTempsReel(self):
         """ Display the animation in real time """
 
-#        self.flag_changement = False
-        self.figure.clear()
-        self.canvas.draw()
-
         [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
 
         # Displacement and pressure functions
@@ -329,33 +325,9 @@ class Ui_MainWindow(object):
         self.oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
         self.canvas.draw()
 
-#        compteur = 0
-#
-#        while self.flag_changement == False:
-#            temps = tempss[compteur]
-#            x = np.sin(omega*temps)
-#            frames_particles = []
-#            deplacement = np.sin(omega*temps)*deplacement_pos
-#            pressure = -np.sin(omega*temps)*pressure_pos
-#            graph2.set_ydata(deplacement)
-#            graph3.set_ydata(pressure)
-#            for ball in balls:
-#                position = ball.update_position(x)
-#                for y in grilley:
-#                    frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
-#            self.canvas.draw()
-#            for frame in frames_particles:
-#                frame.remove()
-#            compteur += 1
-#            if compteur == len(tempss):
-#                compteur = 0
-
 
     def animationGif(self):
         """ Create a GIF animation according to the specified parameters """
-
-        self.figure.clear()
-        self.canvas.draw()
 
         self.disableAll(True)
 
