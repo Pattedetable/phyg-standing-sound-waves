@@ -183,6 +183,9 @@ class Ui_MainWindow(object):
 #        self.pushButton_3.setDisabled(boolean)
         self.comboBox.setDisabled(boolean)
         self.menu_aide.setDisabled(boolean)
+        self.label.setDisabled(boolean)
+        self.label_2.setDisabled(boolean)
+        self.lcdNumber.setDisabled(boolean)
 
     def stopAnim(self):
         self.oscillation.event_source.stop()
