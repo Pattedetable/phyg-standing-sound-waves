@@ -40,26 +40,30 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
 
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget) # Quitter
         self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout.addWidget(self.pushButton_2, 5, 1, 1, 2)
+        self.gridLayout.addWidget(self.pushButton_2, 8, 0, 1, 3)
 
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget) # Exporter GIF
         self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
+
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget) # Animation temps réel
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout.addWidget(self.pushButton_3, 4, 0, 1, 3)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 2, 0, 1, 1)
+        self.gridLayout.addItem(spacerItem, 5, 0, 1, 1)
 
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
-        self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 3)
 
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
@@ -69,11 +73,11 @@ class Ui_MainWindow(object):
         self.lcdNumber.setSizePolicy(sizePolicy)
         self.lcdNumber.setMinimumSize(QtCore.QSize(0, 40))
         self.lcdNumber.setObjectName("lcdNumber")
-        self.gridLayout.addWidget(self.lcdNumber, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.lcdNumber, 2, 1, 1, 1)
 
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
 
         self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
         self.horizontalSlider.setMinimum(1)
@@ -81,12 +85,12 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setPageStep(10)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
-        self.gridLayout.addWidget(self.horizontalSlider, 1, 1, 1, 2)
+        self.gridLayout.addWidget(self.horizontalSlider, 3, 0, 1, 3)
 
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
-        self.gridLayout.addWidget(self.progressBar, 3, 0, 1, 3)
+        self.gridLayout.addWidget(self.progressBar, 7, 0, 1, 3)
 
 #        self.label_3 = QtWidgets.QLabel(self.centralwidget)
 #        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -108,7 +112,7 @@ class Ui_MainWindow(object):
         self.canvas.setSizePolicy(sizePolicy)
         #self.canvas.setScaledContents(True)
         self.canvas.setObjectName("canvas")
-        self.gridLayout.addWidget(self.canvas, 0, 3, 6, 1)
+        self.gridLayout.addWidget(self.canvas, 0, 3, 9, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -136,9 +140,10 @@ class Ui_MainWindow(object):
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-        self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
+        self.pushButton_3.clicked.connect(lambda: self.stopAnim())
+        self.pushButton_3.clicked.connect(lambda: self.animationTempsReel())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
+        self.pushButton.clicked.connect(lambda: self.stopAnim())
         self.pushButton.clicked.connect(lambda: self.animationGif())
         self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: Dialog.close())
@@ -151,7 +156,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Onde sonore stationnaire"))
         self.pushButton_2.setText(_translate("MainWindow", "Quitter"))
-        self.pushButton.setText(_translate("MainWindow", "Générer GIF"))
+        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
+        self.pushButton.setText(_translate("MainWindow", "Exporter GIF"))
         self.label.setText(_translate("MainWindow", "Type de tuyau"))
         self.comboBox.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cliquer pour sélectionner le tuyau</p></body></html>"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Tuyau ouvert"))
@@ -177,8 +183,12 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setDisabled(boolean)
         self.pushButton.setDisabled(boolean)
         self.pushButton_2.setDisabled(boolean)
+        self.pushButton_3.setDisabled(boolean)
         self.comboBox.setDisabled(boolean)
         self.menu_aide.setDisabled(boolean)
+
+    def stopAnim(self):
+        self.oscillation.event_source.stop()
 
     def readParams(self):
         """ Read parameters from a file """
@@ -214,13 +224,13 @@ class Ui_MainWindow(object):
         # Important parameters
         [nb_nodes, tuyau_ferme] = self.readParams()
 
-        nb_particules_hor = 30
+        nb_particules_hor = 15#30
         longueur = 20
         num_frames = 45
         period = 30
         omega = 2*np.pi/period
+        #grilley = [0]
         grilley = [-0.5, 0, 0.5]
-#        grilley = [-0.5, -0.25, 0, 0.25, 0.5]
 
         grillex = np.linspace(0, longueur, 100)
 
@@ -235,11 +245,11 @@ class Ui_MainWindow(object):
         self.ax2.axis([-1, longueur + 1, -1, 1])
         self.ax3.axis([-1, longueur + 1, -1, 1])
 
-        self.ax1.set_ylabel('Particules')
+        self.ax1.set_ylabel('Particules\n dans tuyau')
         self.ax2.set_ylabel('Déplacement')
         self.ax3.set_ylabel('Pression')
 
-        self.ax1.yaxis.set_label_coords(-0.1, 0.5)
+        self.ax1.yaxis.set_label_coords(-0.06, 0.5)
         self.ax2.yaxis.set_label_coords(-0.1, 0.5)
         self.ax3.yaxis.set_label_coords(-0.1, 0.5)
 
@@ -257,7 +267,7 @@ class Ui_MainWindow(object):
 
         # Differences between open and closed pipes
         if tuyau_ferme:
-            self.ax1.add_patch(Rectangle((-1, -0.95), 0.5, 1.9, color='k', alpha=1))
+            self.ax1.add_patch(Rectangle((-0.7, -0.95), 0.2, 1.9, color='k', alpha=1))
             node = 0
             periode = 4*longueur/(1 + 2*(nb_nodes-1))
         else:
@@ -278,6 +288,7 @@ class Ui_MainWindow(object):
     def animationTempsReel(self):
         """ Display the animation in real time """
 
+#        self.flag_changement = False
         self.figure.clear()
         self.canvas.draw()
 
@@ -313,10 +324,32 @@ class Ui_MainWindow(object):
             for ball in balls:
                 position = ball.update_position(x)
                 for y in grilley:
-                    self.frames_particles.append(self.ax1.scatter(position, y, color='k'))
+                    self.frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
 
-        oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
+        self.oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
         self.canvas.draw()
+
+#        compteur = 0
+#
+#        while self.flag_changement == False:
+#            temps = tempss[compteur]
+#            x = np.sin(omega*temps)
+#            frames_particles = []
+#            deplacement = np.sin(omega*temps)*deplacement_pos
+#            pressure = -np.sin(omega*temps)*pressure_pos
+#            graph2.set_ydata(deplacement)
+#            graph3.set_ydata(pressure)
+#            for ball in balls:
+#                position = ball.update_position(x)
+#                for y in grilley:
+#                    frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
+#            self.canvas.draw()
+#            for frame in frames_particles:
+#                frame.remove()
+#            compteur += 1
+#            if compteur == len(tempss):
+#                compteur = 0
+
 
     def animationGif(self):
         """ Create a GIF animation according to the specified parameters """
@@ -361,7 +394,7 @@ class Ui_MainWindow(object):
             for ball in balls:
                 position = ball.update_position(x)
                 for y in grilley:
-                    frames_particles.append(self.ax1.scatter(position, y, color='k'))
+                    frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
             self.figure.savefig(nom_fig)
             self.canvas.draw()
             for frame in frames_particles:
