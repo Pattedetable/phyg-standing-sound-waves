@@ -377,9 +377,10 @@ class Ui_MainWindow(object):
             self.progressBar.setValue(temps/tempss[-1]*100)
 
         print("Finalisation de l'animation...")
+        nom_anim = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', '.', 'Image files (*.gif)')
     #    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
     #    subprocess.call('.\ImageMagick-7.0.7-22-portable-Q16-x64\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
-        os.system('convert -delay 4 -loop 0 _tmp* particules.gif') # With script
+        os.system('convert -delay 4 -loop 0 _tmp* ' + str(nom_anim[0])) # With script
         files = os.listdir('.')
         for file in files:
             if file.startswith('_tmp'):
