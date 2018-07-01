@@ -87,10 +87,10 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.gridLayout.addWidget(self.horizontalSlider, 3, 0, 1, 3)
 
-        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setProperty("value", 0)
-        self.progressBar.setObjectName("progressBar")
-        self.gridLayout.addWidget(self.progressBar, 7, 0, 1, 3)
+#        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+#        self.progressBar.setProperty("value", 0)
+#        self.progressBar.setObjectName("progressBar")
+#        self.gridLayout.addWidget(self.progressBar, 7, 0, 1, 3)
 
         self.canvas = FigureCanvas(self.figure) # Graphique
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.lcdNumber.setToolTip(_translate("MainWindow", "<html><head/><body><p>Numéro du mode</p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "Numéro du mode"))
         self.horizontalSlider.setToolTip(_translate("MainWindow", "<html><head/><body><p>Glisser pour sélectionner le mode</p></body></html>"))
-        self.progressBar.setToolTip(_translate("MainWindow", "<html><head/><body><p>Progression de la création de l\'animation</p></body></html>"))
+#        self.progressBar.setToolTip(_translate("MainWindow", "<html><head/><body><p>Progression de la création de l\'animation</p></body></html>"))
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
         self.action_propos.setText(_translate("MainWindow", "À propos"))
 
@@ -387,7 +387,7 @@ class Ui_MainWindow(object):
             self.canvas.draw()
             for frame in frames_particles:
                 frame.remove()
-            self.progressBar.setValue(temps/tempss[-1]*100)
+#            self.progressBar.setValue(temps/tempss[-1]*100)
 
         print("Finalisation de l'animation...")
         nom_anim = self.enregistrer()
@@ -400,7 +400,7 @@ class Ui_MainWindow(object):
                 os.remove(file)
 
         print("Animation terminée!\n")
-        self.progressBar.setValue(0)
+#        self.progressBar.setValue(0)
         self.disableAll(False)
 
         self.animationTempsReel()
