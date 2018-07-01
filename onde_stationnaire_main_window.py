@@ -137,7 +137,8 @@ class Ui_MainWindow(object):
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
         self.pushButton.clicked.connect(lambda: self.stopAnim())
-        self.pushButton.clicked.connect(lambda: self.animationGif())
+#        self.pushButton.clicked.connect(lambda: self.animationGif())
+        self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: Dialog.close())
         self.pushButton_2.clicked.connect(lambda: MainWindow.close())
@@ -150,7 +151,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Onde sonore stationnaire"))
         self.pushButton_2.setText(_translate("MainWindow", "Quitter"))
 #        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
-        self.pushButton.setText(_translate("MainWindow", "Exporter GIF"))
+        self.pushButton.setText(_translate("MainWindow", "Exporter en vidéo (.mp4)"))
         self.label.setText(_translate("MainWindow", "Type de tuyau"))
         self.comboBox.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cliquer pour sélectionner le tuyau</p></body></html>"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Tuyau ouvert"))
@@ -189,6 +190,17 @@ class Ui_MainWindow(object):
 
     def stopAnim(self):
         self.oscillation.event_source.stop()
+
+    def enregistrer(self):
+        fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', '.', 'Vidéos (*.mp4)')
+        return fichier[0]
+
+    def exporterAnimation(self):
+        nom_anim = self.enregistrer()
+        if nom_anim[-4:] != ".mp4":
+            nom_anim = nom_anim + ".mp4"
+        self.oscillation.save(nom_anim)
+        self.animationTempsReel()
 
     def readParams(self):
         """ Read parameters from a file """
@@ -288,6 +300,7 @@ class Ui_MainWindow(object):
 
         return periode, num_frames, period, omega, balls, grilley, grillex, node
 
+
     def animationTempsReel(self):
         """ Display the animation in real time """
 
@@ -377,10 +390,10 @@ class Ui_MainWindow(object):
             self.progressBar.setValue(temps/tempss[-1]*100)
 
         print("Finalisation de l'animation...")
-        nom_anim = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', '.', 'Image files (*.gif)')
+        nom_anim = self.enregistrer()
     #    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
     #    subprocess.call('.\ImageMagick-7.0.7-22-portable-Q16-x64\convert.exe -delay 4 -loop 0 _tmp* particules.gif', creationflags=CREATE_NO_WINDOW) # Compiled Windows version
-        os.system('convert -delay 4 -loop 0 _tmp* ' + str(nom_anim[0])) # With script
+        os.system('convert -delay 4 -loop 0 _tmp* ' + str(nom_anim)) # With script
         files = os.listdir('.')
         for file in files:
             if file.startswith('_tmp'):
