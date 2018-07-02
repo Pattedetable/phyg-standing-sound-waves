@@ -31,7 +31,7 @@ ui_Onde_Sonore_Stat = onde_stationnaire_main_window.Ui_MainWindow()
 ui_Dial = dialog_onde.Ui_Dialog()
 
 ui_Dial.setupUi(dialog)
-ui_Onde_Sonore_Stat.setupUi(window_Onde, dialog)
+ui_Onde_Sonore_Stat.setupUi(window_Onde, dialog, None)
 
 # Make main window appear
 window_Onde.show()

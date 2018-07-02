@@ -29,7 +29,7 @@ import particle
 
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow, Dialog):
+    def setupUi(self, MainWindow, Dialog, parent):
 
         self.figure = plt.figure()
 
@@ -141,7 +141,7 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: Dialog.close())
-        self.pushButton_2.clicked.connect(lambda: MainWindow.close())
+        self.pushButton_2.clicked.connect(lambda: self.fermerEtAfficher(MainWindow, parent))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.comboBox, self.horizontalSlider)
         MainWindow.setTabOrder(self.horizontalSlider, self.pushButton_2)
@@ -187,6 +187,11 @@ class Ui_MainWindow(object):
         self.label.setDisabled(boolean)
         self.label_2.setDisabled(boolean)
         self.lcdNumber.setDisabled(boolean)
+
+    def fermerEtAfficher(self, MainWindow, window_autre):
+        if window_autre:
+            window_autre.show()
+        MainWindow.close()
 
     def stopAnim(self):
         self.oscillation.event_source.stop()
