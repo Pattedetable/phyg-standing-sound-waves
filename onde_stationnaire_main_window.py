@@ -244,13 +244,13 @@ class Ui_MainWindow(object):
         # Important parameters
         [nb_nodes, tuyau_ferme] = self.readParams()
 
-        nb_particules_hor = 15#30
+        nb_particules_hor = 15
         longueur = 20
         num_frames = 45
         period = 30
         omega = 2*np.pi/period
-        #grilley = [0]
-        grilley = [-0.5, 0, 0.5]
+        grilley = [0]
+        #grilley = [-0.5, 0, 0.5]
 
         grillex = np.linspace(0, longueur, 100)
 
