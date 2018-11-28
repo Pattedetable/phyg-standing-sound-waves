@@ -140,7 +140,7 @@ class Ui_MainWindow(object):
 #        self.pushButton.clicked.connect(lambda: self.animationGif())
         self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
-        self.pushButton_2.clicked.connect(lambda: Dialog.close())
+#        self.pushButton_2.clicked.connect(lambda: Dialog.close())
         self.pushButton_2.clicked.connect(lambda: self.fermerEtAfficher(MainWindow, parent))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.comboBox, self.horizontalSlider)
@@ -173,9 +173,6 @@ class Ui_MainWindow(object):
 #        self.canvas.clear()
 #        self.canvas.setPixmap(QtGui.QPixmap(graphique))
 
-    def effacerGraphique(self):
-        self.figure.clear()
-        self.canvas.draw()
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
@@ -189,8 +186,8 @@ class Ui_MainWindow(object):
         self.lcdNumber.setDisabled(boolean)
 
     def fermerEtAfficher(self, MainWindow, window_autre):
-        if window_autre:
-            window_autre.show()
+#        if window_autre:
+#            window_autre.show()
         MainWindow.close()
 
     def stopAnim(self):
@@ -239,7 +236,7 @@ class Ui_MainWindow(object):
     def initAnimation(self):
         """ Define parameters and setup the base graphic """
 
-        self.effacerGraphique()
+        self.figure.clear()
 
         # Important parameters
         [nb_nodes, tuyau_ferme] = self.readParams()
