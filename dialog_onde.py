@@ -1,5 +1,5 @@
 #
-# Copyright 2017-2018 Manuel Barrette
+# Copyright 2017-2019 Manuel Barrette
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,5 +46,5 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "À propos"))
-        self.label.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Onde sonore stationnaire</span></p><p align=\"center\">Copyright 2017-2018 Manuel Barrette</p><p align=\"center\">Licence <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html\"><span style=\" text-decoration: underline; color:#0000ff;\">GNU GPLv3</span></a></p><p align=\"center\">Code source disponible sur <a href=\"https://github.com/Pattedetable/onde-sonore-stationnaire\"><span style=\" text-decoration: underline; color:#0000ff;\">GitHub</span></a></p></body></html>"))
+        self.label.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Standing sound wave</span></p><p align=\"center\">Copyright 2017-2019 Manuel Barrette</p><p align=\"center\">License <a href=\"https://www.gnu.org/licenses/gpl-3.0.en.html\"><span style=\" text-decoration: underline; color:#0000ff;\">GNU GPLv3</span></a></p><p align=\"center\">Source code available on <a href=\"https://github.com/Pattedetable/onde-sonore-stationnaire\"><span style=\" text-decoration: underline; color:#0000ff;\">GitHub</span></a></p></body></html>"))
         self.pushButton.setText(_translate("Dialog", "Fermer"))

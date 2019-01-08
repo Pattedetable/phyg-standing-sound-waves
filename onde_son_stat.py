@@ -1,5 +1,5 @@
 #
-# Copyright 2017-2018 Manuel Barrette
+# Copyright 2017-2019 Manuel Barrette
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,15 +17,26 @@
 
 """ Initialize windows and make the main window appear """
 import sys
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 import onde_stationnaire_main_window
 import dialog_onde
-
+import locale
 
 # Initialize windows
 app = QApplication(sys.argv)
 window_Onde = QMainWindow()
 dialog = QDialog()
+
+langue_sys = locale.getdefaultlocale()[0]
+langue_sys = langue_sys[0:2]
+translator = QtCore.QTranslator()
+if langue_sys == "fr":
+    langue = "fr_CA"
+else:
+    langue = "en_CA"
+translator.load(langue)
+app.installTranslator(translator)
 
 ui_Onde_Sonore_Stat = onde_stationnaire_main_window.Ui_MainWindow()
 ui_Dial = dialog_onde.Ui_Dialog()

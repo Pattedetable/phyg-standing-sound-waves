@@ -1,5 +1,5 @@
 #
-# Copyright 2017-2018 Manuel Barrette
+# Copyright 2017-2019 Manuel Barrette
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -153,12 +153,12 @@ class Ui_MainWindow(object):
 #        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
         self.pushButton.setText(_translate("MainWindow", "Exporter en vidéo (.mp4)"))
         self.label.setText(_translate("MainWindow", "Type de tuyau"))
-        self.comboBox.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cliquer pour sélectionner le tuyau</p></body></html>"))
+        self.comboBox.setToolTip(_translate("MainWindow", "Cliquer pour sélectionner le tuyau"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Tuyau ouvert"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Tuyau fermé"))
-        self.lcdNumber.setToolTip(_translate("MainWindow", "<html><head/><body><p>Numéro du mode</p></body></html>"))
+        self.lcdNumber.setToolTip(_translate("MainWindow", "Numéro du mode"))
         self.label_2.setText(_translate("MainWindow", "Numéro du mode"))
-        self.horizontalSlider.setToolTip(_translate("MainWindow", "<html><head/><body><p>Glisser pour sélectionner le mode</p></body></html>"))
+        self.horizontalSlider.setToolTip(_translate("MainWindow", "Glisser pour sélectionner le mode"))
 #        self.progressBar.setToolTip(_translate("MainWindow", "<html><head/><body><p>Progression de la création de l\'animation</p></body></html>"))
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
         self.action_propos.setText(_translate("MainWindow", "À propos"))
