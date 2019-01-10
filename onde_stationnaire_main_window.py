@@ -48,10 +48,6 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
 
-#        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget) # Animation temps réel
-#        self.pushButton_3.setObjectName("pushButton_3")
-#        self.gridLayout.addWidget(self.pushButton_3, 4, 0, 1, 3)
-
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
@@ -118,8 +114,10 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_aide.menuAction())
 
         # Initial parameters
-        self.horizontalSlider.setValue(self.readParams()[0])
-        self.comboBox.setCurrentIndex(self.readParams()[1])
+#        self.horizontalSlider.setValue(self.readParams()[0])
+#        self.comboBox.setCurrentIndex(self.readParams()[1])
+        self.horizontalSlider.setValue(1)
+        self.comboBox.setCurrentIndex(0)
 
         # Start animation
         self.animationTempsReel()
@@ -129,18 +127,14 @@ class Ui_MainWindow(object):
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
-        self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
+#        self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
-#        self.pushButton_3.clicked.connect(lambda: self.stopAnim())
-#        self.pushButton_3.clicked.connect(lambda: self.animationTempsReel())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
+#        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
         self.pushButton.clicked.connect(lambda: self.stopAnim())
-#        self.pushButton.clicked.connect(lambda: self.animationGif())
         self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
-#        self.pushButton_2.clicked.connect(lambda: Dialog.close())
         self.pushButton_2.clicked.connect(lambda: self.fermerEtAfficher(MainWindow, parent))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.comboBox, self.horizontalSlider)
@@ -150,7 +144,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Onde sonore stationnaire"))
         self.pushButton_2.setText(_translate("MainWindow", "Quitter"))
-#        self.pushButton_3.setText(_translate("MainWindow", "Montrer mode"))
         self.pushButton.setText(_translate("MainWindow", "Exporter en vidéo (.mp4)"))
         self.label.setText(_translate("MainWindow", "Type de tuyau"))
         self.comboBox.setToolTip(_translate("MainWindow", "Cliquer pour sélectionner le tuyau"))
@@ -240,7 +233,12 @@ class Ui_MainWindow(object):
         self.figure.clear()
 
         # Important parameters
-        [nb_nodes, tuyau_ferme] = self.readParams()
+#        [nb_nodes, tuyau_ferme] = self.readParams()
+        nb_nodes = self.horizontalSlider.value()
+        if self.comboBox.currentIndex() == 1:
+            tuyau_ferme = True
+        else:
+            tuyau_ferme = False
 
         nb_particules_hor = 15
         longueur = 20
