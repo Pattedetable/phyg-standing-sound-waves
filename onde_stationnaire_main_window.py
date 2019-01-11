@@ -83,11 +83,6 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.gridLayout.addWidget(self.horizontalSlider, 3, 0, 1, 3)
 
-#        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-#        self.progressBar.setProperty("value", 0)
-#        self.progressBar.setObjectName("progressBar")
-#        self.gridLayout.addWidget(self.progressBar, 7, 0, 1, 3)
-
         self.canvas = FigureCanvas(self.figure) # Graphique
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -114,8 +109,6 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_aide.menuAction())
 
         # Initial parameters
-#        self.horizontalSlider.setValue(self.readParams()[0])
-#        self.comboBox.setCurrentIndex(self.readParams()[1])
         self.horizontalSlider.setValue(1)
         self.comboBox.setCurrentIndex(0)
 
@@ -127,10 +120,8 @@ class Ui_MainWindow(object):
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
-#        self.horizontalSlider.valueChanged['int'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
-#        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.writeParams(self.horizontalSlider.value(), self.comboBox.currentIndex()))
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
         self.pushButton.clicked.connect(lambda: self.stopAnim())
         self.pushButton.clicked.connect(lambda: self.exporterAnimation())
@@ -152,20 +143,8 @@ class Ui_MainWindow(object):
         self.lcdNumber.setToolTip(_translate("MainWindow", "Numéro du mode"))
         self.label_2.setText(_translate("MainWindow", "Numéro du mode"))
         self.horizontalSlider.setToolTip(_translate("MainWindow", "Glisser pour sélectionner le mode"))
-#        self.progressBar.setToolTip(_translate("MainWindow", "<html><head/><body><p>Progression de la création de l\'animation</p></body></html>"))
         self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
         self.action_propos.setText(_translate("MainWindow", "À propos"))
-
-#    def afficherGif(self):
-#        movie = QtGui.QMovie("particules.gif")
-#        movie.setScaledSize(self.canvas.size())
-#        self.canvas.setMovie(movie)
-#        movie.start()
-#
-#    def afficherGraphique(self, graphique):
-#        self.canvas.clear()
-#        self.canvas.setPixmap(QtGui.QPixmap(graphique))
-
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
@@ -198,34 +177,6 @@ class Ui_MainWindow(object):
         self.oscillation.save(nom_anim)
         self.animationTempsReel()
 
-    def readParams(self):
-        """ Read parameters from a file """
-        try:
-            with open("params.dat") as file_object:
-                lines = file_object.readlines()
-                nb_nodes = int(lines[0].split()[1])
-                bool_list = ['True', 'true']
-                if lines[1].split()[1] in bool_list:
-                    tuyau_ferme = True
-                else:
-                    tuyau_ferme = False
-            return nb_nodes, tuyau_ferme
-        except FileNotFoundError:
-            # Create the file if it does not exist
-            print("Création d'un nouveau fichier de paramètres...")
-            self.writeParams(1, 0)
-            return 1, False
-
-
-    def writeParams(self, nb_nodes, tuyau_ferme_num):
-        """ Writes important parameters to a file """
-        with open('params.dat', 'w') as file_object:
-            file_object.write("nb_nodes " + str(nb_nodes) + "\n")
-            if tuyau_ferme_num == 1:
-                file_object.write("tuyau_ferme True")
-            else:
-                file_object.write("tuyau_ferme False")
-
 
     def initAnimation(self):
         """ Define parameters and setup the base graphic """
@@ -233,7 +184,6 @@ class Ui_MainWindow(object):
         self.figure.clear()
 
         # Important parameters
-#        [nb_nodes, tuyau_ferme] = self.readParams()
         nb_nodes = self.horizontalSlider.value()
         if self.comboBox.currentIndex() == 1:
             tuyau_ferme = True
@@ -341,67 +291,3 @@ class Ui_MainWindow(object):
 
         self.oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
         self.canvas.draw()
-
-
-    def animationGif(self):
-        """ Create a GIF animation according to the specified parameters """
-
-        self.disableAll(True)
-
-        # Initialize animation parameters
-        print("Initialisation de l'animation...")
-        [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
-
-        compteur = 9
-
-        # Displacement and pressure functions
-
-        deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
-        pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
-
-        # Plot maximum and minimum curves
-        self.ax2.plot(grillex, deplacement_pos, 'b--')
-        self.ax2.plot(grillex, -deplacement_pos, 'b--')
-        self.ax3.plot(grillex, pressure_pos, 'r--')
-        self.ax3.plot(grillex, -pressure_pos, 'r--')
-
-        graph2, = self.ax2.plot(grillex, 0*deplacement_pos, color='k')
-        graph3, = self.ax3.plot(grillex, 0*pressure_pos, color='k')
-
-        # Create each frame of the animation
-        print("Création de l'animation...")
-        tempss = np.linspace(0, period-period/num_frames, num_frames)
-        for temps in tempss:
-            compteur += 1
-            nom_fig = "_tmp" + str(compteur) + ".png"
-            x = np.sin(omega*temps)
-            frames_particles = []
-            deplacement = np.sin(omega*temps)*deplacement_pos
-            pressure = -np.sin(omega*temps)*pressure_pos
-            graph2.set_ydata(deplacement)
-            graph3.set_ydata(pressure)
-            for ball in balls:
-                position = ball.update_position(x)
-                for y in grilley:
-                    frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
-            self.figure.savefig(nom_fig)
-            self.canvas.draw()
-            for frame in frames_particles:
-                frame.remove()
-#            self.progressBar.setValue(temps/tempss[-1]*100)
-
-        print("Finalisation de l'animation...")
-        nom_anim = self.enregistrer()
-    #    CREATE_NO_WINDOW = 0x08000000 # Compiled Windows version
-    #    subprocess.call('.\ImageMagick-7.0.8-23-portable-Q16-x86\convert.exe -delay 4 -loop 0 _tmp* ' + str(nom_anim), creationflags=CREATE_NO_WINDOW) # Compiled Windows version
-        os.system('convert -delay 4 -loop 0 _tmp* ' + str(nom_anim)) # With script
-        files = os.listdir('.')
-        for file in files:
-            if file.startswith('_tmp'):
-                os.remove(file)
-
-        print("Animation terminée!\n")
-#        self.progressBar.setValue(0)
-        self.disableAll(False)
-
-        self.animationTempsReel()
