@@ -23,8 +23,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import matplotlib.animation as anim
-import os
-import subprocess
+import os, platform
 import particle
 
 
@@ -167,7 +166,14 @@ class Ui_MainWindow(object):
         self.oscillation.event_source.stop()
 
     def enregistrer(self):
-        fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', '.', 'Vidéos (*.mp4)')
+        systeme_exploitation = platform.system()
+        if systeme_exploitation == 'Windows':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOMEPATH'), 'Vidéos (*.mp4)')
+        elif systeme_exploitation == 'Darwin' or 'Linux':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOME'), 'Vidéos (*.mp4)')
+        else:
+            print("Système non supporté officiellement.  Enregistrement dans le dossier de travail sous le nom 'animation.mp4'.")
+            fichier = 'animation'
         return fichier[0]
 
     def exporterAnimation(self):
