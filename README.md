@@ -55,7 +55,7 @@ La version courte de cette licence est que vous êtes libre d'utiliser ce logici
 
 Le code source est disponible sur [GitHub](https://github.com/Pattedetable/onde-sonore-stationnaire).
 
-Ce logiciel utilise des bibliothèques du projet FFmpeg, distribué sous la license LGPLv2.1.
+Ce logiciel utilise des bibliothèques du projet FFmpeg sous la licence LGPLv2.1, de Qt sous la licence LGPLv3, ainsi que de Python, Numpy et Matplotlib. 
 
 
 ## English
@@ -114,4 +114,4 @@ The short version is that you are free to use this software, to modify its sourc
 
 The source code is available on [GitHub](https://github.com/Pattedetable/onde-sonore-stationnaire).
 
-This software uses libraries from the FFmpeg project under the LGPLv2.1.
+This software uses libraries from the FFmpeg project under the LGPLv2.1, Qt under the LGPLv3, Python, Numpy and Matplotlib.
