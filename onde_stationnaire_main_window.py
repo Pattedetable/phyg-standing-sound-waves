@@ -173,7 +173,7 @@ class Ui_MainWindow(object):
             fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOME'), 'Vidéos (*.mp4)')
         else:
             print("Système non supporté officiellement.  Enregistrement dans le dossier de travail sous le nom 'animation.mp4'.")
-            fichier = 'animation'
+            fichier = ['animation', None]
         return fichier[0]
 
     def exporterAnimation(self):
