@@ -17,11 +17,11 @@ Le fichier utilisé pour démarrer le programme est ```onde_son_stat.py```.
 Afin d'utiliser ce programme, vous aurez besoin des logiciels suivants :
 
   * Python 3
-  * ImageMagick
+  * FFmpeg
 
 Si vous utilisez Linux, Python sera généralement déjà installé.  Si ce n'est pas déjà fait, vous pouvez installer Python 3 à partir des dépôts de logiciels de votre distribution.
 
-Que vous utilisiez Linux, MacOS ou Windows, vous pouvez aussi installer Python à partir du [site officiel](https://www.python.org/).  Sélectionnez ensuite le paquet correspondant à votre système d'exploitation.  ImageMagick peut lui aussi être téléchargé à partir de son [site web](https://www.imagemagick.org/script/index.php).
+Que vous utilisiez Linux, MacOS ou Windows, vous pouvez aussi installer Python à partir du [site officiel](https://www.python.org/).  Sélectionnez ensuite le paquet correspondant à votre système d'exploitation.  FFmpeg peut lui aussi être téléchargé à partir de son [site web](https://ffmpeg.org/).
 
 Vous aurez aussi besoin des modules Python suivants :
 
@@ -70,11 +70,11 @@ The file used to start the program is ```onde_son_stat.py```.
 You will need some software to use this program, namely:
 
   * Python 3
-  * ImageMagick
+  * FFmpeg
 
 If you are using Linux, Python will generally already be installed.  If not, you can install it from your distribution's repositories.
 
-You can also install Python from the [official website](https://www.python.org/).  Once there, select the appropriate package for your operating system.  ImageMagick can also be downloaded from its [website](https://www.imagemagick.org/script/index.php).
+You can also install Python from the [official website](https://www.python.org/).  Once there, select the appropriate package for your operating system.  FFmpeg can also be downloaded from its [website](https://ffmpeg.org/).
 
 You will also need the following Python modules:
 
