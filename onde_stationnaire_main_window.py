@@ -16,11 +16,16 @@
 #
 
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
 
-from onde_stationnaire_animation import Animation
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+import matplotlib.animation as anim
+import os, platform
+import particle
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, Dialog, parent):
@@ -107,19 +112,18 @@ class Ui_MainWindow(object):
         self.comboBox.setCurrentIndex(0)
 
         # Start animation
-        self.anim = Animation()
-        self.anim.animationTempsReel(self.canvas, self.figure, self.horizontalSlider.value(), self.comboBox.currentIndex())
+        self.animationTempsReel()
 
         self.retranslateUi(MainWindow)
         self.action_propos.triggered.connect(lambda: Dialog.show())
         self.lcdNumber.display(self.horizontalSlider.value())
-        self.horizontalSlider.valueChanged['int'].connect(lambda: self.anim.stopAnim())
+        self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
-        self.horizontalSlider.valueChanged['int'].connect(lambda: self.anim.animationTempsReel(self.canvas, self.figure, self.horizontalSlider.value(), self.comboBox.currentIndex()))
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.anim.stopAnim())
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.anim.animationTempsReel(self.canvas, self.figure, self.horizontalSlider.value(), self.comboBox.currentIndex()))
-        self.pushButton.clicked.connect(lambda: self.anim.stopAnim())
-        self.pushButton.clicked.connect(lambda: self.anim.exporterAnimation(self.canvas, self.figure, self.horizontalSlider.value(), self.comboBox.currentIndex()))
+        self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
+        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
+        self.pushButton.clicked.connect(lambda: self.stopAnim())
+        self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: self.fermerEtAfficher(MainWindow, parent))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -157,3 +161,139 @@ class Ui_MainWindow(object):
 #            window_autre.show()
         app = QtWidgets.QApplication.instance()
         app.closeAllWindows()
+
+    def stopAnim(self):
+        self.oscillation.event_source.stop()
+
+    def enregistrer(self):
+        systeme_exploitation = platform.system()
+        if systeme_exploitation == 'Windows':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOMEPATH'), 'Vidéos (*.mp4)')
+        elif systeme_exploitation == 'Darwin' or 'Linux':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOME'), 'Vidéos (*.mp4)')
+        else:
+            print("Système non supporté officiellement.  Enregistrement dans le dossier de travail sous le nom 'animation.mp4'.")
+            fichier = ['animation', None]
+        return fichier[0]
+
+    def exporterAnimation(self):
+        nom_anim = self.enregistrer()
+        if nom_anim[-4:] != ".mp4":
+            nom_anim = nom_anim + ".mp4"
+        self.oscillation.save(nom_anim)
+        self.animationTempsReel()
+
+
+    def initAnimation(self):
+        """ Define parameters and setup the base graphic """
+
+        self.figure.clear()
+
+        # Important parameters
+        nb_nodes = self.horizontalSlider.value()
+        if self.comboBox.currentIndex() == 1:
+            tuyau_ferme = True
+        else:
+            tuyau_ferme = False
+
+        nb_particules_hor = 15
+        longueur = 20
+        num_frames = 45
+        period = 30
+        omega = 2*np.pi/period
+        grilley = [0]
+        #grilley = [-0.5, 0, 0.5]
+
+        grillex = np.linspace(0, longueur, 100)
+
+        self.ax1 = self.figure.add_subplot(311)
+        self.ax2 = self.figure.add_subplot(312, sharex=self.ax1)
+        self.ax3 = self.figure.add_subplot(313, sharex=self.ax1)
+
+        self.ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
+        self.ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
+        self.ax1.axis([-1, longueur + 1, -1, 1])
+
+        self.ax2.axis([-1, longueur + 1, -1, 1])
+        self.ax3.axis([-1, longueur + 1, -1, 1])
+
+        self.ax1.set_ylabel('Particules\n dans tuyau')
+        self.ax2.set_ylabel('Déplacement')
+        self.ax3.set_ylabel('Pression')
+
+        self.ax1.yaxis.set_label_coords(-0.06, 0.5)
+        self.ax2.yaxis.set_label_coords(-0.1, 0.5)
+        self.ax3.yaxis.set_label_coords(-0.1, 0.5)
+
+        self.ax1.set_yticks([])
+        self.ax2.set_yticks([0])
+        self.ax3.set_yticks([0])
+
+        self.ax2.set_yticklabels([r"$0$"])
+        self.ax3.set_yticklabels([r"$p_{atm}$"])
+
+        self.ax2.grid(True)
+        self.ax3.grid(True)
+
+        self.ax3.set_xticks([])
+
+        # Differences between open and closed pipes
+        if tuyau_ferme:
+            self.ax1.add_patch(Rectangle((-0.7, -0.95), 0.2, 1.9, color='k', alpha=1))
+            node = 0
+            periode = 4*longueur/(1 + 2*(nb_nodes-1))
+        else:
+            node = longueur/(2*nb_nodes)
+            periode = 2*longueur/nb_nodes
+
+        # Creation of each individual particle
+        intervalle = longueur/(nb_particules_hor)
+        k = 2*np.pi/periode
+        balls = []
+        for i in range(0, nb_particules_hor+1):
+            x_eq = i*intervalle
+            amplitude = 0.5*np.sin(k*(x_eq - node))
+            balls.append(particle.Particule(x_eq, amplitude))
+
+        return periode, num_frames, period, omega, balls, grilley, grillex, node
+
+
+    def animationTempsReel(self):
+        """ Display the animation in real time """
+
+        [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
+
+        # Displacement and pressure functions
+
+        deplacement_pos = np.sin(2*np.pi/periode*(grillex - node))
+        pressure_pos = np.cos(2*np.pi/periode*(grillex - node))
+
+        # Plot maximum and minimum curves
+        self.ax2.plot(grillex, deplacement_pos, 'b--')
+        self.ax2.plot(grillex, -deplacement_pos, 'b--')
+        self.ax3.plot(grillex, pressure_pos, 'r--')
+        self.ax3.plot(grillex, -pressure_pos, 'r--')
+
+        graph2, = self.ax2.plot(grillex, 0*deplacement_pos, color='k')
+        graph3, = self.ax3.plot(grillex, 0*pressure_pos, color='k')
+
+        tempss = np.linspace(0, period-period/num_frames, num_frames)
+        self.frames_particles = []
+
+        def update(i):
+            for frame in self.frames_particles:
+                frame.remove()
+            self.frames_particles = []
+            temps = tempss[i]
+            x = np.sin(omega*temps)
+            deplacement = np.sin(omega*temps)*deplacement_pos
+            pressure = -np.sin(omega*temps)*pressure_pos
+            graph2.set_ydata(deplacement)
+            graph3.set_ydata(pressure)
+            for ball in balls:
+                position = ball.update_position(x)
+                for y in grilley:
+                    self.frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
+
+        self.oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
+        self.canvas.draw()
