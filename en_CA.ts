@@ -51,6 +51,22 @@
         <source>À propos</source>
         <translation>About</translation>
     </message>
+    <message>
+        <source>Enregistrer sous...</source>
+        <translation>Save as...</translation>
+    </message>
+    <message>
+        <source>Particules</source>
+        <translation>Particles</translation>
+    </message>
+    <message>
+        <source>Déplacement</source>
+        <translation>Displacement</translation>
+    </message>
+    <message>
+        <source>Pression</source>
+        <translation>Pressure</translation>
+    </message>
 </context>
 <context>
     <name>Dialog</name>

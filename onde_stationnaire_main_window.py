@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 8, 0, 1, 3)
 
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget) # Exporter GIF
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget) # Exporter vidéo
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
 
@@ -111,10 +111,17 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setValue(1)
         self.comboBox.setCurrentIndex(0)
 
+        # Operating system detection
+        self.systeme_exploitation = platform.system()
+        if self.systeme_exploitation == "Darwin":
+            self.pushButton.setDisabled(True)
+
+        self.retranslateUi(MainWindow)
+
         # Start animation
         self.animationTempsReel()
 
-        self.retranslateUi(MainWindow)
+
         self.action_propos.triggered.connect(lambda: Dialog.show())
         self.lcdNumber.display(self.horizontalSlider.value())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
@@ -131,19 +138,19 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.horizontalSlider, self.pushButton_2)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Onde sonore stationnaire"))
-        self.pushButton_2.setText(_translate("MainWindow", "Quitter"))
-        self.pushButton.setText(_translate("MainWindow", "Exporter en vidéo (.mp4)"))
-        self.label.setText(_translate("MainWindow", "Type de tuyau"))
-        self.comboBox.setToolTip(_translate("MainWindow", "Cliquer pour sélectionner le tuyau"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Tuyau ouvert"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Tuyau fermé"))
-        self.lcdNumber.setToolTip(_translate("MainWindow", "Numéro du mode"))
-        self.label_2.setText(_translate("MainWindow", "Numéro du mode"))
-        self.horizontalSlider.setToolTip(_translate("MainWindow", "Glisser pour sélectionner le mode"))
-        self.menu_aide.setTitle(_translate("MainWindow", "Aide"))
-        self.action_propos.setText(_translate("MainWindow", "À propos"))
+        self._translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(self._translate("MainWindow", "Onde sonore stationnaire"))
+        self.pushButton_2.setText(self._translate("MainWindow", "Quitter"))
+        self.pushButton.setText(self._translate("MainWindow", "Exporter en vidéo (.mp4)"))
+        self.label.setText(self._translate("MainWindow", "Type de tuyau"))
+        self.comboBox.setToolTip(self._translate("MainWindow", "Cliquer pour sélectionner le tuyau"))
+        self.comboBox.setItemText(0, self._translate("MainWindow", "Tuyau ouvert"))
+        self.comboBox.setItemText(1, self._translate("MainWindow", "Tuyau fermé"))
+        self.lcdNumber.setToolTip(self._translate("MainWindow", "Numéro du mode"))
+        self.label_2.setText(self._translate("MainWindow", "Numéro du mode"))
+        self.horizontalSlider.setToolTip(self._translate("MainWindow", "Glisser pour sélectionner le mode"))
+        self.menu_aide.setTitle(self._translate("MainWindow", "Aide"))
+        self.action_propos.setText(self._translate("MainWindow", "À propos"))
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
@@ -166,11 +173,10 @@ class Ui_MainWindow(object):
         self.oscillation.event_source.stop()
 
     def enregistrer(self):
-        systeme_exploitation = platform.system()
-        if systeme_exploitation == 'Windows':
-            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOMEPATH'), 'Vidéos (*.mp4)')
-        elif systeme_exploitation == 'Darwin' or 'Linux':
-            fichier = QtWidgets.QFileDialog.getSaveFileName(None, 'Enregister sous...', os.getenv('HOME'), 'Vidéos (*.mp4)')
+        if self.systeme_exploitation == 'Windows':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, self._translate("MainWindow", "Enregister sous..."), os.getenv('HOMEPATH'), 'Vidéos (*.mp4)')
+        elif self.systeme_exploitation == 'Darwin' or 'Linux':
+            fichier = QtWidgets.QFileDialog.getSaveFileName(None, self._translate("MainWindow", "Enregister sous..."), os.getenv('HOME'), 'Vidéos (*.mp4)')
         else:
             print("Système non supporté officiellement.  Enregistrement dans le dossier de travail sous le nom 'animation.mp4'.")
             fichier = ['animation', None]
@@ -217,11 +223,12 @@ class Ui_MainWindow(object):
         self.ax2.axis([-1, longueur + 1, -1, 1])
         self.ax3.axis([-1, longueur + 1, -1, 1])
 
-        self.ax1.set_ylabel('Particules\n dans tuyau')
-        self.ax2.set_ylabel('Déplacement')
-        self.ax3.set_ylabel('Pression')
+        self.ax1.set_ylabel(self._translate("MainWindow", "Particules"))
+        self.ax2.set_ylabel(self._translate("MainWindow", "Déplacement"))
+        self.ax3.set_ylabel(self._translate("MainWindow", "Pression"))
 
-        self.ax1.yaxis.set_label_coords(-0.06, 0.5)
+#        self.ax1.yaxis.set_label_coords(-0.06, 0.5)
+        self.ax1.yaxis.set_label_coords(-0.1, 0.5)
         self.ax2.yaxis.set_label_coords(-0.1, 0.5)
         self.ax3.yaxis.set_label_coords(-0.1, 0.5)
 
