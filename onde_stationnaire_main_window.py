@@ -43,9 +43,9 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 8, 0, 1, 3)
 
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget) # Exporter vidéo
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
+#        self.pushButton = QtWidgets.QPushButton(self.centralwidget) # Exporter vidéo
+#        self.pushButton.setObjectName("pushButton")
+#        self.gridLayout.addWidget(self.pushButton, 6, 0, 1, 3)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
@@ -111,10 +111,10 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setValue(1)
         self.comboBox.setCurrentIndex(0)
 
-        # Operating system detection
-        self.systeme_exploitation = platform.system()
-        if self.systeme_exploitation == "Darwin":
-            self.pushButton.setDisabled(True)
+#        # Operating system detection
+#        self.systeme_exploitation = platform.system()
+#        if self.systeme_exploitation == "Darwin":
+#            self.pushButton.setDisabled(True)
 
         self.retranslateUi(MainWindow)
 
@@ -129,8 +129,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
         self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
-        self.pushButton.clicked.connect(lambda: self.stopAnim())
-        self.pushButton.clicked.connect(lambda: self.exporterAnimation())
+#        self.pushButton.clicked.connect(lambda: self.stopAnim())
+#        self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
         self.pushButton_2.clicked.connect(lambda: self.fermerEtAfficher(MainWindow, parent))
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -141,7 +141,7 @@ class Ui_MainWindow(object):
         self._translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(self._translate("MainWindow", "Onde sonore stationnaire"))
         self.pushButton_2.setText(self._translate("MainWindow", "Quitter"))
-        self.pushButton.setText(self._translate("MainWindow", "Exporter en vidéo (.mp4)"))
+#        self.pushButton.setText(self._translate("MainWindow", "Exporter en vidéo (.mp4)"))
         self.label.setText(self._translate("MainWindow", "Type de tuyau"))
         self.comboBox.setToolTip(self._translate("MainWindow", "Cliquer pour sélectionner le tuyau"))
         self.comboBox.setItemText(0, self._translate("MainWindow", "Tuyau ouvert"))
@@ -154,7 +154,7 @@ class Ui_MainWindow(object):
 
     def disableAll(self, boolean):
         self.horizontalSlider.setDisabled(boolean)
-        self.pushButton.setDisabled(boolean)
+#        self.pushButton.setDisabled(boolean)
         self.pushButton_2.setDisabled(boolean)
 #        self.pushButton_3.setDisabled(boolean)
         self.comboBox.setDisabled(boolean)
