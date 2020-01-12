@@ -29,7 +29,7 @@
     </message>
     <message>
         <source>Tuyau fermé</source>
-        <translation>Closed pipe</translation>
+        <translation>Stopped pipe</translation>
     </message>
     <message>
         <source>Numéro du mode</source>
