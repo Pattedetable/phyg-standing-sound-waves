@@ -17,8 +17,8 @@
 
 """ Initialize windows and make the main window appear """
 import sys
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
 import onde_stationnaire_main_window
 import dialog_onde
 import platform
@@ -52,4 +52,4 @@ ui_Onde_Sonore_Stat.setupUi(window_Onde, dialog, None)
 
 # Make main window appear
 window_Onde.show()
-sys.exit(app.exec_())
+sys.exit(app.exec())

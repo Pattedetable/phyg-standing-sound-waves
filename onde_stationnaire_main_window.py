@@ -16,8 +16,8 @@
 #
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt6 import QtCore, QtGui, QtWidgets
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.gridLayout.addItem(spacerItem, 5, 0, 1, 1)
 
         self.comboBox = QtWidgets.QComboBox(self.centralwidget) # Type de tuyau
@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 3)
 
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lcdNumber.sizePolicy().hasHeightForWidth())
@@ -74,16 +74,15 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
 
-        self.horizontalSlider = QtWidgets.QSlider(self.centralwidget) # Numéro du mode
+        self.horizontalSlider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self.centralwidget) # Numéro du mode
         self.horizontalSlider.setMinimum(1)
         self.horizontalSlider.setMaximum(5)
         self.horizontalSlider.setPageStep(2)
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.gridLayout.addWidget(self.horizontalSlider, 3, 0, 1, 3)
 
         self.canvas = FigureCanvas(self.figure) # Graphique
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas.sizePolicy().hasHeightForWidth())
@@ -102,7 +101,7 @@ class Ui_MainWindow(object):
         self.menu_aide = QtWidgets.QMenu(self.menubar)
         self.menu_aide.setObjectName("menu_aide")
         MainWindow.setMenuBar(self.menubar)
-        self.action_propos = QtWidgets.QAction(MainWindow)
+        self.action_propos = QtGui.QAction(MainWindow)
         self.action_propos.setObjectName("action_propos")
         self.menu_aide.addAction(self.action_propos)
         self.menubar.addAction(self.menu_aide.menuAction())
@@ -127,8 +126,8 @@ class Ui_MainWindow(object):
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.stopAnim())
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.lcdNumber.display(self.horizontalSlider.value()))
         self.horizontalSlider.valueChanged['int'].connect(lambda: self.animationTempsReel())
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.stopAnim())
-        self.comboBox.currentIndexChanged['QString'].connect(lambda: self.animationTempsReel())
+        self.comboBox.currentIndexChanged['int'].connect(lambda: self.stopAnim())
+        self.comboBox.currentIndexChanged['int'].connect(lambda: self.animationTempsReel())
 #        self.pushButton.clicked.connect(lambda: self.stopAnim())
 #        self.pushButton.clicked.connect(lambda: self.exporterAnimation())
         self.pushButton_2.clicked.connect(lambda: plt.close())
