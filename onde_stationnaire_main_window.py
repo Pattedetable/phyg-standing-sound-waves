@@ -207,8 +207,8 @@ class Ui_MainWindow(object):
         num_frames = 45
         period = 30
         omega = 2*np.pi/period
-        grilley = [0]
-        #grilley = [-0.5, 0, 0.5]
+#        grilley = [0]
+        grilley = [-1, 0, 1]
 
         grillex = np.linspace(0, longueur, 100)
 
@@ -216,9 +216,15 @@ class Ui_MainWindow(object):
         self.ax2 = self.figure.add_subplot(312, sharex=self.ax1)
         self.ax3 = self.figure.add_subplot(313, sharex=self.ax1)
 
-        self.ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
-        self.ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
-        self.ax1.axis([-1, longueur + 1, -1, 1])
+        self.ax1.set_aspect("equal")
+
+        self.ax1.add_patch(Rectangle((-0.5, 1.5), 21, 0.5, color='k', alpha=1))
+        self.ax1.add_patch(Rectangle((-0.5, -2), 21, 0.5, color='k', alpha=1))
+        self.ax1.axis([-1, longueur + 1, -2, 2])
+
+#        self.ax1.add_patch(Rectangle((-0.5, 0.85), 21, 0.1, color='k', alpha=1))
+#        self.ax1.add_patch(Rectangle((-0.5, -0.95), 21, 0.1, color='k', alpha=1))
+#        self.ax1.axis([-1, longueur + 1, -1, 1])
 
         self.ax2.axis([-1, longueur + 1, -1, 1])
         self.ax3.axis([-1, longueur + 1, -1, 1])
@@ -246,7 +252,8 @@ class Ui_MainWindow(object):
 
         # Differences between open and closed pipes
         if tuyau_ferme:
-            self.ax1.add_patch(Rectangle((-0.7, -0.95), 0.2, 1.9, color='k', alpha=1))
+            self.ax1.add_patch(Rectangle((-0.7, -2), 0.5, 4, color='k', alpha=1))
+#            self.ax1.add_patch(Rectangle((-0.7, -0.95), 0.2, 1.9, color='k', alpha=1))
             node = 0
             periode = 4*longueur/(1 + 2*(nb_nodes-1))
         else:
@@ -257,18 +264,26 @@ class Ui_MainWindow(object):
         intervalle = longueur/(nb_particules_hor)
         k = 2*np.pi/periode
         balls = []
+        cercles = {}
         for i in range(0, nb_particules_hor+1):
             x_eq = i*intervalle
             amplitude = 0.5*np.sin(k*(x_eq - node))
             balls.append(particle.Particule(x_eq, amplitude))
+        for ball in balls:
+            colonne = {}
+            for y in grilley:
+                colonne[y] = plt.Circle((ball.x_eq, y), 0.3, color="k")
+#                cercles[(ball, y)] = plt.Circle((ball.x_eq, y), 0.5, animated=True, color="k")
+                self.ax1.add_artist(colonne[y])
+            cercles[ball] = colonne
 
-        return periode, num_frames, period, omega, balls, grilley, grillex, node
+        return periode, num_frames, period, omega, balls, grillex, node, cercles
 
 
     def animationTempsReel(self):
         """ Display the animation in real time """
 
-        [periode, num_frames, period, omega, balls, grilley, grillex, node] = self.initAnimation()
+        [periode, num_frames, period, omega, balls, grillex, node, cercles] = self.initAnimation()
 
         # Displacement and pressure functions
 
@@ -285,22 +300,18 @@ class Ui_MainWindow(object):
         graph3, = self.ax3.plot(grillex, 0*pressure_pos, color='k')
 
         tempss = np.linspace(0, period-period/num_frames, num_frames)
-        self.frames_particles = []
 
         def update(i):
-            for frame in self.frames_particles:
-                frame.remove()
-            self.frames_particles = []
             temps = tempss[i]
             x = np.sin(omega*temps)
             deplacement = np.sin(omega*temps)*deplacement_pos
             pressure = -np.sin(omega*temps)*pressure_pos
             graph2.set_ydata(deplacement)
             graph3.set_ydata(pressure)
-            for ball in balls:
+            for ball, colonne in cercles.items():
                 position = ball.update_position(x)
-                for y in grilley:
-                    self.frames_particles.append(self.ax1.scatter(position, y, s=150, color='k'))
+                for y, cercle in colonne.items():
+                    cercle.center = position, y
 
         self.oscillation = anim.FuncAnimation(self.figure, update, frames=num_frames, repeat=True, interval=40)
         self.canvas.draw()
