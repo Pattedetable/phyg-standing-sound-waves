@@ -18,11 +18,10 @@ Le fichier utilisé pour démarrer le programme est ```onde_son_stat.py```.
 Afin d'utiliser ce programme, vous aurez besoin des logiciels suivants :
 
   * Python 3
-  * FFmpeg
 
 Si vous utilisez Linux, Python sera généralement déjà installé.  Si ce n'est pas déjà fait, vous pouvez installer Python 3 à partir des dépôts de logiciels de votre distribution.
 
-Que vous utilisiez Linux, MacOS ou Windows, vous pouvez aussi installer Python à partir du [site officiel](https://www.python.org/).  Sélectionnez ensuite le paquet correspondant à votre système d'exploitation.  FFmpeg peut lui aussi être téléchargé à partir de son [site web](https://ffmpeg.org/).
+Que vous utilisiez Linux, MacOS ou Windows, vous pouvez aussi installer Python à partir du [site officiel](https://www.python.org/).  Sélectionnez ensuite le paquet correspondant à votre système d'exploitation.
 
 Vous aurez aussi besoin des modules Python suivants :
 
@@ -56,7 +55,7 @@ La version courte de cette licence est que vous êtes libre d'utiliser ce logici
 
 Le code source est disponible sur [GitHub](https://github.com/Pattedetable/phyg-standing-sound-waves).
 
-Ce logiciel utilise des bibliothèques du projet FFmpeg sous la licence LGPLv2.1, de Qt sous la licence LGPLv3, ainsi que de Python, Numpy et Matplotlib.
+Ce logiciel utilise des bibliothèques de Qt sous les licences GPL/LGPLv3, ainsi que de Python, Numpy et Matplotlib.
 
 
 ## English
@@ -73,11 +72,10 @@ The file used to start the program is ```onde_son_stat.py```.
 You will need some software to use this program, namely:
 
   * Python 3
-  * FFmpeg
 
 If you are using Linux, Python will generally already be installed.  If not, you can install it from your distribution's repositories.
 
-You can also install Python from the [official website](https://www.python.org/).  Once there, select the appropriate package for your operating system.  FFmpeg can also be downloaded from its [website](https://ffmpeg.org/).
+You can also install Python from the [official website](https://www.python.org/).  Once there, select the appropriate package for your operating system.
 
 You will also need the following Python modules:
 
@@ -115,4 +113,4 @@ The short version is that you are free to use this software, to modify its sourc
 
 The source code is available on [GitHub](https://github.com/Pattedetable/phyg-standing-sound-waves).
 
-This software uses libraries from the FFmpeg project under the LGPLv2.1, Qt under the LGPLv3, Python, Numpy and Matplotlib.
+This software uses libraries from Qt under the GPL/LGPLv3, Python, Numpy and Matplotlib.
