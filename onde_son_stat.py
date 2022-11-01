@@ -16,13 +16,20 @@
 #
 
 """ Initialize windows and make the main window appear """
-import sys
+import sys, os
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication, QMainWindow, QDialog
-import onde_stationnaire_main_window
-import dialog_onde
 import platform
 import locale, ctypes
+from glob import glob
+
+results = glob(os.getcwd() + "/**/", recursive=True)
+for result in results:
+    if result[-2] != "_":
+        sys.path.insert(1, result)
+
+import onde_stationnaire_main_window
+import dialog_onde
 
 # Initialize windows
 app = QApplication(sys.argv)

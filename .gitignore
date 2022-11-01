@@ -1,6 +1,7 @@
 *.gif
 *.spec
 __pycache__/*
+*/__pycache__/*
 Interface/*
 *~
 *_old.py
