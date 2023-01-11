@@ -1,6 +1,6 @@
 # Onde sonore stationnaire
 
-![screenshot](https://raw.githubusercontent.com/Pattedetable/phyg-standing-sound-waves/qt6/images/onde_screenshot.png)
+![screenshot](https://raw.githubusercontent.com/Pattedetable/phyg-standing-sound-waves/master/images/onde_screenshot.png)
 
 _The English version follows_
 
